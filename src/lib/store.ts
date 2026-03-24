@@ -1,5 +1,5 @@
 // Simple in-memory store for hackathon prototype
-import { create } from 'zustand';
+// Simple in-memory store for hackathon prototype
 
 export interface WasteSubmission {
   id: string;
