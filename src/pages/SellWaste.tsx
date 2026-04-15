@@ -4,24 +4,27 @@ import { useUser } from '@/lib/UserContext';
 import { getAllRates, getMarketRate } from '@/lib/store';
 import { PageWrapper } from '@/components/PageWrapper';
 import { TokenBadge } from '@/components/TokenBadge';
+import { CelebrationModal } from '@/components/CelebrationModal';
+import { fireConfetti } from '@/components/Confetti';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Check, Recycle, TrendingUp } from 'lucide-react';
+import { Recycle, TrendingUp } from 'lucide-react';
 
 const wasteTypes = [
-  { name: 'Plastic', emoji: '🧴', color: 'bg-blue-500/10 border-blue-500/25 text-blue-400' },
-  { name: 'Paper', emoji: '📄', color: 'bg-yellow-500/10 border-yellow-500/25 text-yellow-400' },
-  { name: 'Metal', emoji: '🥫', color: 'bg-slate-400/10 border-slate-400/25 text-slate-300' },
-  { name: 'E-Waste', emoji: '📱', color: 'bg-purple-500/10 border-purple-500/25 text-purple-400' },
-  { name: 'Glass', emoji: '🍾', color: 'bg-cyan-500/10 border-cyan-500/25 text-cyan-400' },
-  { name: 'Organic', emoji: '🍂', color: 'bg-green-500/10 border-green-500/25 text-green-400' },
+  { name: 'Plastic', emoji: '🧴', color: 'bg-blue-50 border-blue-200 hover:bg-blue-100' },
+  { name: 'Paper', emoji: '📄', color: 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100' },
+  { name: 'Metal', emoji: '🥫', color: 'bg-slate-50 border-slate-200 hover:bg-slate-100' },
+  { name: 'E-Waste', emoji: '📱', color: 'bg-purple-50 border-purple-200 hover:bg-purple-100' },
+  { name: 'Glass', emoji: '🍾', color: 'bg-cyan-50 border-cyan-200 hover:bg-cyan-100' },
+  { name: 'Organic', emoji: '🍂', color: 'bg-green-50 border-green-200 hover:bg-green-100' },
 ];
 
 const SellWaste = () => {
   const user = useUser();
   const [selected, setSelected] = useState('');
   const [weight, setWeight] = useState('');
-  const [step, setStep] = useState<'select' | 'weight' | 'success'>('select');
+  const [step, setStep] = useState<'select' | 'weight'>('select');
+  const [showCelebration, setShowCelebration] = useState(false);
   const [earnedTokens, setEarnedTokens] = useState(0);
   const rates = getAllRates();
 
@@ -30,7 +33,8 @@ const SellWaste = () => {
     if (!selected || !w || w <= 0) return;
     const earned = user.submitWaste(selected, w);
     setEarnedTokens(earned);
-    setStep('success');
+    setShowCelebration(true);
+    fireConfetti();
   };
 
   const reset = () => {
@@ -38,13 +42,22 @@ const SellWaste = () => {
     setWeight('');
     setStep('select');
     setEarnedTokens(0);
+    setShowCelebration(false);
   };
 
   return (
     <PageWrapper>
+      <CelebrationModal
+        open={showCelebration}
+        onClose={reset}
+        tokens={earnedTokens}
+        title="Waste Sold!"
+        subtitle={`${weight} kg of ${selected} submitted`}
+      />
+
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold neon-text">Sell Waste</h1>
+          <h1 className="text-2xl font-bold text-foreground">Sell Waste ♻️</h1>
           <p className="text-sm text-muted-foreground">Drop waste at any café to earn tokens</p>
         </div>
         <TokenBadge amount={user.tokens} />
@@ -57,13 +70,13 @@ const SellWaste = () => {
             <div className="glass-card-glow p-4 mb-5">
               <div className="flex items-center gap-2 mb-3">
                 <TrendingUp className="w-4 h-4 text-primary" />
-                <h3 className="text-sm font-semibold">Today's Market Rates</h3>
+                <h3 className="text-sm font-semibold text-foreground">Today's Market Rates</h3>
               </div>
               <div className="grid grid-cols-3 gap-2 text-xs">
                 {Object.entries(rates).map(([type, rate]) => (
-                  <div key={type} className="flex justify-between bg-muted/30 rounded-lg px-2 py-1.5 border border-border/20">
+                  <div key={type} className="flex justify-between bg-secondary rounded-lg px-2 py-1.5">
                     <span className="text-muted-foreground">{type}</span>
-                    <span className="font-semibold text-foreground">₹{rate}/kg</span>
+                    <span className="font-bold text-foreground">₹{rate}/kg</span>
                   </div>
                 ))}
               </div>
@@ -72,17 +85,19 @@ const SellWaste = () => {
             <h2 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Select Waste Type</h2>
             <div className="grid grid-cols-2 gap-3">
               {wasteTypes.map(({ name, emoji, color }) => (
-                <button
+                <motion.button
                   key={name}
                   onClick={() => { setSelected(name); setStep('weight'); }}
-                  className={`glass-card p-4 flex items-center gap-3 border-2 hover:scale-105 transition-all active:scale-95 ${color}`}
+                  className={`glass-card card-hover p-4 flex items-center gap-3 border-2 ${color}`}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                 >
-                  <span className="text-2xl">{emoji}</span>
+                  <span className="text-3xl">{emoji}</span>
                   <div className="text-left">
                     <p className="font-semibold text-sm text-foreground">{name}</p>
-                    <p className="text-xs opacity-70">₹{getMarketRate(name)}/kg</p>
+                    <p className="text-xs text-muted-foreground">₹{getMarketRate(name)}/kg</p>
                   </div>
-                </button>
+                </motion.button>
               ))}
             </div>
           </motion.div>
@@ -92,13 +107,13 @@ const SellWaste = () => {
           <motion.div key="weight" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
             <div className="glass-card-glow p-6 space-y-5">
               <div className="text-center">
-                <span className="text-4xl">{wasteTypes.find(w => w.name === selected)?.emoji}</span>
-                <h2 className="text-xl font-bold mt-2">{selected}</h2>
+                <span className="text-5xl">{wasteTypes.find(w => w.name === selected)?.emoji}</span>
+                <h2 className="text-xl font-bold mt-2 text-foreground">{selected}</h2>
                 <p className="text-sm text-muted-foreground">Rate: ₹{getMarketRate(selected)}/kg</p>
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-1 block">Weight (kg)</label>
+                <label className="text-sm font-medium mb-1 block text-foreground">Weight (kg)</label>
                 <Input
                   type="number"
                   placeholder="e.g. 2.5"
@@ -114,11 +129,11 @@ const SellWaste = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center p-4 bg-primary/10 rounded-xl border border-primary/20"
+                  className="text-center p-4 eco-gradient-light rounded-2xl border border-primary/20"
                 >
                   <p className="text-sm text-muted-foreground">You'll earn</p>
-                  <p className="text-3xl font-bold text-primary neon-text">
-                    {Math.round(parseFloat(weight) * getMarketRate(selected))} TC
+                  <p className="text-3xl font-bold text-primary">
+                    {Math.round(parseFloat(weight) * getMarketRate(selected))} TC 🪙
                   </p>
                 </motion.div>
               )}
@@ -128,45 +143,12 @@ const SellWaste = () => {
                 <Button
                   onClick={handleSubmit}
                   disabled={!weight || parseFloat(weight) <= 0}
-                  className="flex-1 eco-gradient text-primary-foreground"
+                  className="flex-1 eco-gradient text-primary-foreground font-semibold"
                 >
-                  Submit
+                  Submit ✨
                 </Button>
               </div>
             </div>
-          </motion.div>
-        )}
-
-        {step === 'success' && (
-          <motion.div
-            key="success"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center space-y-5 py-10"
-          >
-            <motion.div
-              className="w-20 h-20 mx-auto eco-gradient rounded-full flex items-center justify-center"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', delay: 0.2 }}
-            >
-              <Check className="w-10 h-10 text-primary-foreground" />
-            </motion.div>
-            <div>
-              <h2 className="text-2xl font-bold">Tokens Credited! 🎉</h2>
-              <p className="text-muted-foreground mt-1">You earned</p>
-              <motion.p
-                className="text-4xl font-bold text-primary mt-2 neon-text"
-                initial={{ scale: 0.5 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', delay: 0.4 }}
-              >
-                +{earnedTokens} TC
-              </motion.p>
-            </div>
-            <Button onClick={reset} className="eco-gradient text-primary-foreground">
-              <Recycle className="w-4 h-4 mr-2" /> Sell More Waste
-            </Button>
           </motion.div>
         )}
       </AnimatePresence>

@@ -6,86 +6,52 @@
 
 @layer base {
   :root {
-    --background: 40 33% 97%;
-    --foreground: 150 20% 12%;
+    --background: 0 0% 100%;
+    --foreground: 160 10% 12%;
 
-    --card: 40 30% 95%;
-    --card-foreground: 150 20% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 10% 12%;
 
-    --popover: 40 33% 97%;
-    --popover-foreground: 150 20% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 10% 12%;
 
-    --primary: 152 55% 34%;
-    --primary-foreground: 40 33% 97%;
+    --primary: 142 71% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 38 50% 88%;
-    --secondary-foreground: 150 20% 18%;
+    --secondary: 145 30% 94%;
+    --secondary-foreground: 160 10% 18%;
 
-    --muted: 40 20% 92%;
-    --muted-foreground: 150 10% 45%;
+    --muted: 145 15% 95%;
+    --muted-foreground: 160 5% 45%;
 
-    --accent: 42 90% 55%;
-    --accent-foreground: 150 20% 12%;
+    --accent: 42 92% 56%;
+    --accent-foreground: 42 90% 15%;
 
     --destructive: 0 72% 51%;
-    --destructive-foreground: 40 33% 97%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 40 20% 88%;
-    --input: 40 20% 88%;
-    --ring: 152 55% 34%;
+    --border: 145 15% 90%;
+    --input: 145 15% 90%;
+    --ring: 142 71% 45%;
 
     --radius: 1rem;
 
-    --token-gold: 42 90% 55%;
-    --token-gold-foreground: 42 90% 20%;
-    --eco-green: 152 55% 34%;
-    --eco-green-light: 152 40% 90%;
-    --eco-green-dark: 152 60% 22%;
+    --token-gold: 42 92% 56%;
+    --token-gold-foreground: 42 90% 15%;
+    --eco-green: 142 71% 45%;
+    --eco-green-light: 142 60% 94%;
+    --eco-green-dark: 142 72% 32%;
     --earth-brown: 30 30% 40%;
     --warm-cream: 40 33% 97%;
 
-    --sidebar-background: 152 30% 12%;
-    --sidebar-foreground: 40 20% 92%;
-    --sidebar-primary: 152 55% 45%;
-    --sidebar-primary-foreground: 40 33% 97%;
-    --sidebar-accent: 152 25% 18%;
-    --sidebar-accent-foreground: 40 20% 92%;
-    --sidebar-border: 152 20% 20%;
-    --sidebar-ring: 152 55% 45%;
-  }
-
-  .dark {
-    --background: 155 20% 6%;
-    --foreground: 40 15% 90%;
-    --card: 155 18% 10%;
-    --card-foreground: 40 15% 90%;
-    --popover: 155 18% 10%;
-    --popover-foreground: 40 15% 90%;
-    --primary: 152 60% 42%;
-    --primary-foreground: 155 20% 6%;
-    --secondary: 155 15% 15%;
-    --secondary-foreground: 40 15% 88%;
-    --muted: 155 12% 14%;
-    --muted-foreground: 150 8% 55%;
-    --accent: 42 85% 52%;
-    --accent-foreground: 155 20% 6%;
-    --destructive: 0 65% 45%;
-    --destructive-foreground: 40 15% 92%;
-    --border: 155 12% 16%;
-    --input: 155 12% 16%;
-    --ring: 152 60% 42%;
-    --eco-green: 152 60% 42%;
-    --eco-green-light: 152 30% 18%;
-    --eco-green-dark: 152 55% 55%;
-    --token-gold: 42 85% 52%;
-    --sidebar-background: 155 20% 5%;
-    --sidebar-foreground: 40 15% 90%;
-    --sidebar-primary: 152 60% 42%;
-    --sidebar-primary-foreground: 40 33% 97%;
-    --sidebar-accent: 155 18% 10%;
-    --sidebar-accent-foreground: 40 15% 90%;
-    --sidebar-border: 155 12% 12%;
-    --sidebar-ring: 152 60% 42%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 160 10% 12%;
+    --sidebar-primary: 142 71% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 145 30% 94%;
+    --sidebar-accent-foreground: 160 10% 12%;
+    --sidebar-border: 145 15% 90%;
+    --sidebar-ring: 142 71% 45%;
   }
 }
 
@@ -96,6 +62,10 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    background-image: 
+      radial-gradient(circle at 20% 20%, hsl(142 71% 45% / 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, hsl(42 92% 56% / 0.03) 0%, transparent 50%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -105,35 +75,42 @@
 
 @layer components {
   .glass-card {
-    @apply bg-card/60 backdrop-blur-xl border border-border/30 rounded-2xl;
-    box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.08), 0 8px 24px -8px rgba(0,0,0,0.4);
+    @apply bg-card rounded-2xl border border-border/60;
+    box-shadow: 0 2px 12px -2px rgba(0,0,0,0.06), 0 4px 24px -4px rgba(0,0,0,0.04);
   }
 
   .glass-card-glow {
-    @apply bg-card/60 backdrop-blur-xl border border-primary/20 rounded-2xl;
-    box-shadow: 0 0 30px -5px hsl(var(--primary) / 0.15), 0 8px 24px -8px rgba(0,0,0,0.5);
+    @apply bg-card rounded-2xl border border-primary/20;
+    box-shadow: 0 4px 20px -4px hsl(var(--primary) / 0.12), 0 2px 12px -2px rgba(0,0,0,0.06);
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98];
   }
 
   .token-badge {
     @apply inline-flex items-center gap-1 px-3 py-1 rounded-full font-semibold text-sm;
-    background: linear-gradient(135deg, hsl(var(--token-gold) / 0.2), hsl(var(--token-gold) / 0.1));
-    border: 1px solid hsl(var(--token-gold) / 0.3);
-    color: hsl(var(--token-gold));
-    text-shadow: 0 0 12px hsl(var(--token-gold) / 0.4);
+    background: linear-gradient(135deg, hsl(var(--token-gold) / 0.15), hsl(var(--token-gold) / 0.08));
+    border: 1.5px solid hsl(var(--token-gold) / 0.3);
+    color: hsl(var(--token-gold-foreground));
   }
 
   .eco-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(152 70% 28%));
-    box-shadow: 0 4px 20px -4px hsl(var(--primary) / 0.4);
+    background: linear-gradient(135deg, hsl(142 71% 45%), hsl(152 72% 38%));
+    box-shadow: 0 4px 14px -3px hsl(142 71% 45% / 0.4);
+  }
+
+  .eco-gradient-light {
+    background: linear-gradient(135deg, hsl(142 60% 94%), hsl(152 50% 92%));
   }
 
   .gold-gradient {
-    background: linear-gradient(135deg, hsl(var(--accent)), hsl(42 80% 45%));
-    box-shadow: 0 4px 20px -4px hsl(var(--accent) / 0.4);
+    background: linear-gradient(135deg, hsl(var(--accent)), hsl(42 80% 48%));
+    box-shadow: 0 4px 14px -3px hsl(var(--accent) / 0.35);
   }
 
-  .neon-text {
-    text-shadow: 0 0 20px hsl(var(--primary) / 0.5), 0 0 40px hsl(var(--primary) / 0.2);
+  .fun-shadow {
+    box-shadow: 0 4px 20px -4px hsl(142 71% 45% / 0.2), 0 2px 8px -2px rgba(0,0,0,0.05);
   }
 
   .status-dot {
