@@ -13,7 +13,7 @@ export const BottomNav = () => {
   const { pathname } = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 glass-card rounded-none rounded-t-2xl border-t border-border/60 px-2 py-1 safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/30 px-2 py-1 safe-area-bottom bg-background/80 backdrop-blur-xl">
       <div className="flex justify-around items-center max-w-lg mx-auto">
         {tabs.map(({ to, icon: Icon, label }) => {
           const active = pathname === to;
@@ -23,11 +23,13 @@ export const BottomNav = () => {
               to={to}
               className={`flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl transition-all duration-200 ${
                 active
-                  ? 'text-primary scale-105'
+                  ? 'text-primary'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 1.8} />
+              <div className={`p-1.5 rounded-xl transition-all ${active ? 'bg-primary/15 shadow-[0_0_12px_hsl(var(--primary)/0.3)]' : ''}`}>
+                <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 1.8} />
+              </div>
               <span className="text-[10px] font-medium">{label}</span>
             </Link>
           );

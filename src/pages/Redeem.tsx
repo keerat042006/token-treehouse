@@ -18,16 +18,16 @@ interface RedeemItem {
 }
 
 const items: RedeemItem[] = [
-  { id: '1', name: 'Cappuccino', cost: 45, icon: Coffee, category: 'cafe', description: 'At TrashCash Base Café', color: 'bg-amber-50 text-amber-700' },
-  { id: '2', name: 'Veg Sandwich', cost: 60, icon: Coffee, category: 'cafe', description: 'At TrashCash Base Café', color: 'bg-amber-50 text-amber-700' },
-  { id: '3', name: 'Green Bean Latte', cost: 55, icon: Store, category: 'partner', description: 'Partner: Green Bean Café', color: 'bg-emerald-50 text-emerald-700' },
-  { id: '4', name: 'EcoBites Salad Bowl', cost: 70, icon: Store, category: 'partner', description: 'Partner: EcoBites Kitchen', color: 'bg-emerald-50 text-emerald-700' },
-  { id: '5', name: 'Arcade Games (1hr)', cost: 30, icon: Gamepad2, category: 'entertainment', description: 'Fun Zone access', color: 'bg-purple-50 text-purple-700' },
-  { id: '6', name: 'Movie Streaming', cost: 50, icon: Film, category: 'entertainment', description: '24-hour access pass', color: 'bg-purple-50 text-purple-700' },
-  { id: '7', name: 'WiFi Pass (1 day)', cost: 15, icon: Wifi, category: 'entertainment', description: 'High-speed WiFi', color: 'bg-blue-50 text-blue-700' },
-  { id: '8', name: 'Phone Charging', cost: 5, icon: Zap, category: 'entertainment', description: 'Fast charging station', color: 'bg-blue-50 text-blue-700' },
-  { id: '9', name: 'Plant a Tree 🌳', cost: 25, icon: Heart, category: 'donation', description: 'TreeNation Foundation', color: 'bg-rose-50 text-rose-700' },
-  { id: '10', name: 'Clean Ocean Fund', cost: 20, icon: Heart, category: 'donation', description: 'Ocean cleanup initiative', color: 'bg-rose-50 text-rose-700' },
+  { id: '1', name: 'Cappuccino', cost: 45, icon: Coffee, category: 'cafe', description: 'At TrashCash Base Café', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
+  { id: '2', name: 'Veg Sandwich', cost: 60, icon: Coffee, category: 'cafe', description: 'At TrashCash Base Café', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
+  { id: '3', name: 'Green Bean Latte', cost: 55, icon: Store, category: 'partner', description: 'Partner: Green Bean Café', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
+  { id: '4', name: 'EcoBites Salad Bowl', cost: 70, icon: Store, category: 'partner', description: 'Partner: EcoBites Kitchen', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
+  { id: '5', name: 'Arcade Games (1hr)', cost: 30, icon: Gamepad2, category: 'entertainment', description: 'Fun Zone access', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20' },
+  { id: '6', name: 'Movie Streaming', cost: 50, icon: Film, category: 'entertainment', description: '24-hour access pass', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20' },
+  { id: '7', name: 'WiFi Pass (1 day)', cost: 15, icon: Wifi, category: 'entertainment', description: 'High-speed WiFi', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+  { id: '8', name: 'Phone Charging', cost: 5, icon: Zap, category: 'entertainment', description: 'Fast charging station', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+  { id: '9', name: 'Plant a Tree 🌳', cost: 25, icon: Heart, category: 'donation', description: 'TreeNation Foundation', color: 'bg-rose-500/10 text-rose-400 border-rose-500/20' },
+  { id: '10', name: 'Clean Ocean Fund', cost: 20, icon: Heart, category: 'donation', description: 'Ocean cleanup initiative', color: 'bg-rose-500/10 text-rose-400 border-rose-500/20' },
 ];
 
 const categories = [
@@ -59,7 +59,7 @@ const Redeem = () => {
     <PageWrapper>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Spend Tokens</h1>
+          <h1 className="text-2xl font-bold neon-text">Spend Tokens</h1>
           <p className="text-sm text-muted-foreground">Redeem at cafés, fun zone & more</p>
         </div>
         <TokenBadge amount={user.tokens} />
@@ -71,10 +71,10 @@ const Redeem = () => {
           <button
             key={c.key}
             onClick={() => setFilter(c.key)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all border ${
               filter === c.key
-                ? 'eco-gradient text-primary-foreground'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                ? 'eco-gradient text-primary-foreground border-transparent'
+                : 'bg-muted/30 text-muted-foreground border-border/30 hover:bg-muted/50'
             }`}
           >
             {c.label}
@@ -92,7 +92,7 @@ const Redeem = () => {
               transition={{ delay: i * 0.05 }}
               className="glass-card p-4 flex items-center gap-4"
             >
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${item.color}`}>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${item.color}`}>
                 <item.icon className="w-5 h-5" />
               </div>
               <div className="flex-1 min-w-0">

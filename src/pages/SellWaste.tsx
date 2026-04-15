@@ -9,12 +9,12 @@ import { Input } from '@/components/ui/input';
 import { Check, Recycle, TrendingUp } from 'lucide-react';
 
 const wasteTypes = [
-  { name: 'Plastic', emoji: '🧴', color: 'bg-blue-50 border-blue-200 text-blue-700' },
-  { name: 'Paper', emoji: '📄', color: 'bg-yellow-50 border-yellow-200 text-yellow-700' },
-  { name: 'Metal', emoji: '🥫', color: 'bg-slate-50 border-slate-300 text-slate-700' },
-  { name: 'E-Waste', emoji: '📱', color: 'bg-purple-50 border-purple-200 text-purple-700' },
-  { name: 'Glass', emoji: '🍾', color: 'bg-cyan-50 border-cyan-200 text-cyan-700' },
-  { name: 'Organic', emoji: '🍂', color: 'bg-green-50 border-green-200 text-green-700' },
+  { name: 'Plastic', emoji: '🧴', color: 'bg-blue-500/10 border-blue-500/25 text-blue-400' },
+  { name: 'Paper', emoji: '📄', color: 'bg-yellow-500/10 border-yellow-500/25 text-yellow-400' },
+  { name: 'Metal', emoji: '🥫', color: 'bg-slate-400/10 border-slate-400/25 text-slate-300' },
+  { name: 'E-Waste', emoji: '📱', color: 'bg-purple-500/10 border-purple-500/25 text-purple-400' },
+  { name: 'Glass', emoji: '🍾', color: 'bg-cyan-500/10 border-cyan-500/25 text-cyan-400' },
+  { name: 'Organic', emoji: '🍂', color: 'bg-green-500/10 border-green-500/25 text-green-400' },
 ];
 
 const SellWaste = () => {
@@ -44,7 +44,7 @@ const SellWaste = () => {
     <PageWrapper>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Sell Waste</h1>
+          <h1 className="text-2xl font-bold neon-text">Sell Waste</h1>
           <p className="text-sm text-muted-foreground">Drop waste at any café to earn tokens</p>
         </div>
         <TokenBadge amount={user.tokens} />
@@ -54,16 +54,16 @@ const SellWaste = () => {
         {step === 'select' && (
           <motion.div key="select" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             {/* Market Rates */}
-            <div className="glass-card p-4 mb-5">
+            <div className="glass-card-glow p-4 mb-5">
               <div className="flex items-center gap-2 mb-3">
                 <TrendingUp className="w-4 h-4 text-primary" />
                 <h3 className="text-sm font-semibold">Today's Market Rates</h3>
               </div>
               <div className="grid grid-cols-3 gap-2 text-xs">
                 {Object.entries(rates).map(([type, rate]) => (
-                  <div key={type} className="flex justify-between bg-muted/50 rounded-lg px-2 py-1.5">
+                  <div key={type} className="flex justify-between bg-muted/30 rounded-lg px-2 py-1.5 border border-border/20">
                     <span className="text-muted-foreground">{type}</span>
-                    <span className="font-semibold">₹{rate}/kg</span>
+                    <span className="font-semibold text-foreground">₹{rate}/kg</span>
                   </div>
                 ))}
               </div>
@@ -79,7 +79,7 @@ const SellWaste = () => {
                 >
                   <span className="text-2xl">{emoji}</span>
                   <div className="text-left">
-                    <p className="font-semibold text-sm">{name}</p>
+                    <p className="font-semibold text-sm text-foreground">{name}</p>
                     <p className="text-xs opacity-70">₹{getMarketRate(name)}/kg</p>
                   </div>
                 </button>
@@ -90,7 +90,7 @@ const SellWaste = () => {
 
         {step === 'weight' && (
           <motion.div key="weight" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
-            <div className="glass-card p-6 space-y-5">
+            <div className="glass-card-glow p-6 space-y-5">
               <div className="text-center">
                 <span className="text-4xl">{wasteTypes.find(w => w.name === selected)?.emoji}</span>
                 <h2 className="text-xl font-bold mt-2">{selected}</h2>
@@ -114,10 +114,10 @@ const SellWaste = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center p-4 bg-eco-light rounded-xl"
+                  className="text-center p-4 bg-primary/10 rounded-xl border border-primary/20"
                 >
                   <p className="text-sm text-muted-foreground">You'll earn</p>
-                  <p className="text-3xl font-bold text-primary">
+                  <p className="text-3xl font-bold text-primary neon-text">
                     {Math.round(parseFloat(weight) * getMarketRate(selected))} TC
                   </p>
                 </motion.div>
@@ -156,7 +156,7 @@ const SellWaste = () => {
               <h2 className="text-2xl font-bold">Tokens Credited! 🎉</h2>
               <p className="text-muted-foreground mt-1">You earned</p>
               <motion.p
-                className="text-4xl font-bold text-primary mt-2"
+                className="text-4xl font-bold text-primary mt-2 neon-text"
                 initial={{ scale: 0.5 }}
                 animate={{ scale: 1 }}
                 transition={{ type: 'spring', delay: 0.4 }}
