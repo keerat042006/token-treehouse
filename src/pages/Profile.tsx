@@ -24,7 +24,7 @@ const Profile = () => {
   return (
     <PageWrapper>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Profile</h1>
+        <h1 className="text-2xl font-bold neon-text">Profile</h1>
         <Button variant="outline" size="sm" onClick={handleLogout}>
           <LogOut className="w-4 h-4 mr-1" /> Logout
         </Button>
@@ -49,7 +49,7 @@ const Profile = () => {
       </motion.div>
 
       {/* Level Progress */}
-      <div className="glass-card p-4 mb-5">
+      <div className="glass-card-glow p-4 mb-5">
         <div className="flex items-center justify-between mb-2">
           <LevelBadge level={user.level} />
           {user.level !== 'Gold' && (
@@ -88,7 +88,7 @@ const Profile = () => {
         {user.transactions.map(tx => (
           <div key={tx.id} className="glass-card p-3 flex items-center gap-3">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              tx.type === 'earned' ? 'bg-eco-light text-primary' : 'bg-red-50 text-destructive'
+              tx.type === 'earned' ? 'bg-primary/15 text-primary' : 'bg-destructive/15 text-destructive'
             }`}>
               {tx.type === 'earned' ? <ArrowDown className="w-4 h-4" /> : <ArrowUp className="w-4 h-4" />}
             </div>

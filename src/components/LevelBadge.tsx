@@ -1,9 +1,9 @@
 import { Badge } from '@/components/ui/badge';
 
 const colors = {
-  Bronze: 'bg-amber-700/20 text-amber-800 border-amber-700/30',
-  Silver: 'bg-slate-400/20 text-slate-700 border-slate-400/30',
-  Gold: 'bg-yellow-400/20 text-yellow-700 border-yellow-500/30',
+  Bronze: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
+  Silver: 'bg-slate-400/15 text-slate-300 border-slate-400/30',
+  Gold: 'bg-yellow-400/15 text-yellow-300 border-yellow-400/30',
 };
 
 export const LevelBadge = ({ level }: { level: 'Bronze' | 'Silver' | 'Gold' }) => (

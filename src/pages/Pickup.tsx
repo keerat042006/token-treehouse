@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '@/lib/UserContext';
 import { PageWrapper } from '@/components/PageWrapper';
@@ -40,7 +40,6 @@ const Pickup = () => {
     }, 2000);
   };
 
-  // Demo: auto-advance pickup statuses
   const advanceStatus = (id: string, currentStatus: PickupRequest['status']) => {
     const idx = statusSteps.indexOf(currentStatus);
     if (idx < statusSteps.length - 1) {
@@ -52,7 +51,7 @@ const Pickup = () => {
     <PageWrapper>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Doorstep Pickup</h1>
+          <h1 className="text-2xl font-bold neon-text">Doorstep Pickup</h1>
           <p className="text-sm text-muted-foreground">We collect waste from your door</p>
         </div>
         <TokenBadge amount={user.tokens} />
@@ -81,7 +80,7 @@ const Pickup = () => {
       <AnimatePresence mode="wait">
         {view === 'form' && !submitted && (
           <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
-            <div className="glass-card p-5 space-y-4">
+            <div className="glass-card-glow p-5 space-y-4">
               <div>
                 <label className="text-sm font-medium flex items-center gap-1 mb-1"><MapPin className="w-3.5 h-3.5" /> Address</label>
                 <Input placeholder="42 MG Road, Bangalore" value={address} onChange={e => setAddress(e.target.value)} />
@@ -155,7 +154,7 @@ const Pickup = () => {
                       const done = i <= currentIdx;
                       return (
                         <div key={s} className="flex-1 flex items-center">
-                          <div className={`h-2 flex-1 rounded-full transition-colors ${done ? 'eco-gradient' : 'bg-muted'}`} />
+                          <div className={`h-2 flex-1 rounded-full transition-colors ${done ? 'eco-gradient' : 'bg-muted/30'}`} />
                         </div>
                       );
                     })}

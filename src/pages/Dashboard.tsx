@@ -57,16 +57,16 @@ const Dashboard = () => {
           <h2 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Quick Actions</h2>
           <div className="grid grid-cols-3 gap-3">
             {[
-              { icon: Recycle, label: 'Sell Waste', to: '/sell', color: 'bg-eco-light text-eco-dark' },
-              { icon: Truck, label: 'Pickup', to: '/pickup', color: 'bg-blue-50 text-blue-700' },
-              { icon: ShoppingBag, label: 'Redeem', to: '/redeem', color: 'bg-amber-50 text-amber-700' },
+              { icon: Recycle, label: 'Sell Waste', to: '/sell', color: 'bg-primary/15 text-primary border-primary/20' },
+              { icon: Truck, label: 'Pickup', to: '/pickup', color: 'bg-blue-500/15 text-blue-400 border-blue-500/20' },
+              { icon: ShoppingBag, label: 'Redeem', to: '/redeem', color: 'bg-amber-500/15 text-amber-400 border-amber-500/20' },
             ].map(({ icon: Icon, label, to, color }) => (
               <button
                 key={to}
                 onClick={() => navigate(to)}
-                className={`glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform active:scale-95`}
+                className="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform active:scale-95"
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${color}`}>
                   <Icon className="w-5 h-5" />
                 </div>
                 <span className="text-xs font-medium">{label}</span>
@@ -79,12 +79,12 @@ const Dashboard = () => {
         <motion.div variants={fadeItem}>
           <h2 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Your Impact</h2>
           <div className="grid grid-cols-2 gap-3">
-            <div className="glass-card p-4">
-              <p className="text-2xl font-bold text-primary">{impactBottles}</p>
+            <div className="glass-card-glow p-4">
+              <p className="text-2xl font-bold text-primary neon-text">{impactBottles}</p>
               <p className="text-xs text-muted-foreground">Plastic bottles equivalent saved</p>
             </div>
-            <div className="glass-card p-4">
-              <p className="text-2xl font-bold text-primary">{impactCO2} kg</p>
+            <div className="glass-card-glow p-4">
+              <p className="text-2xl font-bold text-primary neon-text">{impactCO2} kg</p>
               <p className="text-xs text-muted-foreground">CO₂ emissions reduced</p>
             </div>
           </div>
@@ -124,11 +124,11 @@ const LoginScreen = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="mx-auto w-20 h-20 eco-gradient rounded-2xl flex items-center justify-center shadow-lg animate-pulse-glow">
+        <div className="mx-auto w-20 h-20 eco-gradient rounded-2xl flex items-center justify-center animate-pulse-glow">
           <Recycle className="w-10 h-10 text-primary-foreground" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold">TrashCash</h1>
+          <h1 className="text-3xl font-bold neon-text">TrashCash</h1>
           <p className="text-muted-foreground mt-1">Turn waste into rewards 🌱</p>
         </div>
         <div className="space-y-3">
