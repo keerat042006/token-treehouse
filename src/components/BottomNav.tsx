@@ -13,7 +13,7 @@ export const BottomNav = () => {
   const { pathname } = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/30 px-2 py-1 safe-area-bottom bg-background/80 backdrop-blur-xl">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-lg border-t border-border px-2 py-1 safe-area-bottom shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.06)]">
       <div className="flex justify-around items-center max-w-lg mx-auto">
         {tabs.map(({ to, icon: Icon, label }) => {
           const active = pathname === to;
@@ -27,7 +27,7 @@ export const BottomNav = () => {
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <div className={`p-1.5 rounded-xl transition-all ${active ? 'bg-primary/15 shadow-[0_0_12px_hsl(var(--primary)/0.3)]' : ''}`}>
+              <div className={`p-1.5 rounded-xl transition-all ${active ? 'bg-primary/10' : ''}`}>
                 <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 1.8} />
               </div>
               <span className="text-[10px] font-medium">{label}</span>
