@@ -4,8 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { UserProvider } from "@/lib/UserContext";
-import { AppSidebar } from "@/components/AppSidebar";
-import { TopBar } from "@/components/TopBar";
+import { BottomNav } from "@/components/BottomNav";
 import Dashboard from "./pages/Dashboard";
 import SellWaste from "./pages/SellWaste";
 import Pickup from "./pages/Pickup";
@@ -22,22 +21,15 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <div className="flex min-h-screen w-full">
-            <AppSidebar />
-            <div className="flex-1 flex flex-col min-w-0">
-              <TopBar />
-              <main className="flex-1 max-w-[1400px] w-full mx-auto">
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/sell" element={<SellWaste />} />
-                  <Route path="/pickup" element={<Pickup />} />
-                  <Route path="/redeem" element={<Redeem />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-            </div>
-          </div>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/sell" element={<SellWaste />} />
+            <Route path="/pickup" element={<Pickup />} />
+            <Route path="/redeem" element={<Redeem />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <BottomNav />
         </BrowserRouter>
       </UserProvider>
     </TooltipProvider>
