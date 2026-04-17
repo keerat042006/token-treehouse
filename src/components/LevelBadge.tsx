@@ -1,9 +1,9 @@
 import { Recycle } from 'lucide-react';
 
 const styles = {
-  Bronze: { bg: 'hsl(30 80% 65%)', fg: 'hsl(var(--forest-deep))', label: 'Bronze Recycler' },
-  Silver: { bg: 'hsl(var(--lime))', fg: 'hsl(var(--forest-deep))', label: 'Silver Recycler' },
-  Gold: { bg: 'hsl(var(--amber))', fg: 'hsl(var(--forest-deep))', label: 'Gold Recycler' },
+  Bronze: { bg: 'hsl(28 78% 58%)', fg: '#1a1208', label: 'Bronze Recycler' },
+  Silver: { bg: 'hsl(var(--primary))', fg: '#ffffff', label: 'Silver Recycler' },
+  Gold: { bg: 'hsl(var(--amber))', fg: '#1a1208', label: 'Gold Recycler' },
 };
 
 export const LevelBadge = ({ level }: { level: 'Bronze' | 'Silver' | 'Gold' }) => {
