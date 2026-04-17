@@ -14,7 +14,7 @@ const stagger = {
 };
 const fadeItem = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 const Dashboard = () => {
@@ -175,11 +175,6 @@ const ImpactCard = ({ value, label, color, decimals = 0 }: { value: number; labe
         style={{ background: `radial-gradient(circle, ${colorVar} 0%, transparent 70%)`, opacity: 0.18 }}
       />
       <div className="relative">
-        <CountUp
-          end={value}
-          decimals={decimals}
-          className="block font-bold leading-none"
-        />
         <p
           className="font-bold leading-none mb-2"
           style={{
