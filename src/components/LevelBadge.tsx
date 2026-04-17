@@ -1,13 +1,20 @@
-import { Badge } from '@/components/ui/badge';
+import { Recycle } from 'lucide-react';
 
-const colors = {
-  Bronze: 'bg-amber-100 text-amber-700 border-amber-300',
-  Silver: 'bg-slate-100 text-slate-600 border-slate-300',
-  Gold: 'bg-yellow-100 text-yellow-700 border-yellow-300',
+const styles = {
+  Bronze: { bg: 'hsl(30 80% 65%)', fg: 'hsl(var(--forest-deep))', label: 'Bronze Recycler' },
+  Silver: { bg: 'hsl(var(--lime))', fg: 'hsl(var(--forest-deep))', label: 'Silver Recycler' },
+  Gold: { bg: 'hsl(var(--amber))', fg: 'hsl(var(--forest-deep))', label: 'Gold Recycler' },
 };
 
-export const LevelBadge = ({ level }: { level: 'Bronze' | 'Silver' | 'Gold' }) => (
-  <Badge variant="outline" className={`${colors[level]} font-semibold text-xs`}>
-    {level === 'Gold' ? '🥇' : level === 'Silver' ? '🥈' : '🥉'} {level} Recycler
-  </Badge>
-);
+export const LevelBadge = ({ level }: { level: 'Bronze' | 'Silver' | 'Gold' }) => {
+  const s = styles[level];
+  return (
+    <span
+      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold"
+      style={{ background: s.bg, color: s.fg, boxShadow: `0 4px 14px -4px ${s.bg}` }}
+    >
+      <Recycle className="w-3 h-3" strokeWidth={2.6} />
+      {s.label}
+    </span>
+  );
+};
