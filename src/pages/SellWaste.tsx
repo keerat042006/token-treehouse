@@ -8,15 +8,15 @@ import { CelebrationModal } from '@/components/CelebrationModal';
 import { fireConfetti } from '@/components/Confetti';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Recycle, TrendingUp } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
 const wasteTypes = [
-  { name: 'Plastic', emoji: '🧴', color: 'bg-blue-50 border-blue-200 hover:bg-blue-100' },
-  { name: 'Paper', emoji: '📄', color: 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100' },
-  { name: 'Metal', emoji: '🥫', color: 'bg-slate-50 border-slate-200 hover:bg-slate-100' },
-  { name: 'E-Waste', emoji: '📱', color: 'bg-purple-50 border-purple-200 hover:bg-purple-100' },
-  { name: 'Glass', emoji: '🍾', color: 'bg-cyan-50 border-cyan-200 hover:bg-cyan-100' },
-  { name: 'Organic', emoji: '🍂', color: 'bg-green-50 border-green-200 hover:bg-green-100' },
+  { name: 'Plastic', emoji: '🧴' },
+  { name: 'Paper', emoji: '📄' },
+  { name: 'Metal', emoji: '🥫' },
+  { name: 'E-Waste', emoji: '📱' },
+  { name: 'Glass', emoji: '🍾' },
+  { name: 'Organic', emoji: '🍂' },
 ];
 
 const SellWaste = () => {
@@ -38,11 +38,8 @@ const SellWaste = () => {
   };
 
   const reset = () => {
-    setSelected('');
-    setWeight('');
-    setStep('select');
-    setEarnedTokens(0);
-    setShowCelebration(false);
+    setSelected(''); setWeight(''); setStep('select');
+    setEarnedTokens(0); setShowCelebration(false);
   };
 
   return (
@@ -57,8 +54,8 @@ const SellWaste = () => {
 
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Sell Waste ♻️</h1>
-          <p className="text-sm text-muted-foreground">Drop waste at any café to earn tokens</p>
+          <h1 className="text-[28px] font-bold text-cream">Sell Waste ♻️</h1>
+          <p className="text-sm text-cream-muted">Drop waste at any café to earn tokens</p>
         </div>
         <TokenBadge amount={user.tokens} />
       </div>
@@ -66,36 +63,37 @@ const SellWaste = () => {
       <AnimatePresence mode="wait">
         {step === 'select' && (
           <motion.div key="select" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            {/* Market Rates */}
             <div className="glass-card-glow p-4 mb-5">
               <div className="flex items-center gap-2 mb-3">
-                <TrendingUp className="w-4 h-4 text-primary" />
-                <h3 className="text-sm font-semibold text-foreground">Today's Market Rates</h3>
+                <TrendingUp className="w-4 h-4 text-lime" />
+                <h3 className="text-sm font-bold text-cream">Today's Market Rates</h3>
               </div>
               <div className="grid grid-cols-3 gap-2 text-xs">
                 {Object.entries(rates).map(([type, rate]) => (
-                  <div key={type} className="flex justify-between bg-secondary rounded-lg px-2 py-1.5">
-                    <span className="text-muted-foreground">{type}</span>
-                    <span className="font-bold text-foreground">₹{rate}/kg</span>
+                  <div key={type} className="flex justify-between items-center bg-forest-darker rounded-lg px-2.5 py-1.5 border border-border">
+                    <span className="text-cream-muted">{type}</span>
+                    <span className="font-bold text-lime">₹{rate}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <h2 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">Select Waste Type</h2>
+            <h2 className="section-label mb-3">Select Waste Type</h2>
             <div className="grid grid-cols-2 gap-3">
-              {wasteTypes.map(({ name, emoji, color }) => (
+              {wasteTypes.map(({ name, emoji }, i) => (
                 <motion.button
                   key={name}
                   onClick={() => { setSelected(name); setStep('weight'); }}
-                  className={`glass-card card-hover p-4 flex items-center gap-3 border-2 ${color}`}
-                  whileHover={{ scale: 1.03 }}
+                  className="glass-tile p-4 flex items-center gap-3"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.04 }}
                   whileTap={{ scale: 0.97 }}
                 >
                   <span className="text-3xl">{emoji}</span>
                   <div className="text-left">
-                    <p className="font-semibold text-sm text-foreground">{name}</p>
-                    <p className="text-xs text-muted-foreground">₹{getMarketRate(name)}/kg</p>
+                    <p className="font-bold text-sm text-cream">{name}</p>
+                    <p className="text-xs text-lime font-semibold">₹{getMarketRate(name)}/kg</p>
                   </div>
                 </motion.button>
               ))}
@@ -108,18 +106,18 @@ const SellWaste = () => {
             <div className="glass-card-glow p-6 space-y-5">
               <div className="text-center">
                 <span className="text-5xl">{wasteTypes.find(w => w.name === selected)?.emoji}</span>
-                <h2 className="text-xl font-bold mt-2 text-foreground">{selected}</h2>
-                <p className="text-sm text-muted-foreground">Rate: ₹{getMarketRate(selected)}/kg</p>
+                <h2 className="text-xl font-bold mt-2 text-cream">{selected}</h2>
+                <p className="text-sm text-cream-muted">Rate: <span className="text-lime font-semibold">₹{getMarketRate(selected)}/kg</span></p>
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-1 block text-foreground">Weight (kg)</label>
+                <label className="text-sm font-semibold mb-1.5 block text-cream">Weight (kg)</label>
                 <Input
                   type="number"
                   placeholder="e.g. 2.5"
                   value={weight}
                   onChange={e => setWeight(e.target.value)}
-                  className="text-center text-lg h-12"
+                  className="text-center text-lg h-12 bg-forest-darker border-border text-cream"
                   min="0.1"
                   step="0.1"
                 />
@@ -129,21 +127,21 @@ const SellWaste = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center p-4 eco-gradient-light rounded-2xl border border-primary/20"
+                  className="text-center p-4 eco-gradient-light rounded-2xl"
                 >
-                  <p className="text-sm text-muted-foreground">You'll earn</p>
-                  <p className="text-3xl font-bold text-primary">
+                  <p className="text-xs text-cream-muted uppercase tracking-wider font-semibold">You'll earn</p>
+                  <p className="text-3xl font-bold text-lime mt-1" style={{ textShadow: '0 0 20px hsl(var(--lime) / 0.5)' }}>
                     {Math.round(parseFloat(weight) * getMarketRate(selected))} TC 🪙
                   </p>
                 </motion.div>
               )}
 
               <div className="flex gap-3">
-                <Button variant="outline" onClick={() => setStep('select')} className="flex-1">Back</Button>
+                <Button variant="outline" onClick={() => setStep('select')} className="flex-1 border-border text-cream hover:bg-forest-darker">Back</Button>
                 <Button
                   onClick={handleSubmit}
                   disabled={!weight || parseFloat(weight) <= 0}
-                  className="flex-1 eco-gradient text-primary-foreground font-semibold"
+                  className="flex-1 eco-gradient font-bold"
                 >
                   Submit ✨
                 </Button>

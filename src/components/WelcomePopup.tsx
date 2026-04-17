@@ -28,18 +28,21 @@ export const WelcomePopup = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={close} />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={close} />
           <motion.div
-            className="relative bg-card rounded-3xl p-8 max-w-sm w-full text-center border border-border overflow-hidden"
-            style={{ boxShadow: '0 20px 60px -12px rgba(34,197,94,0.25)' }}
+            className="relative rounded-3xl p-8 max-w-sm w-full text-center overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, hsl(var(--forest-card)), hsl(var(--forest-deep)))',
+              border: '1px solid hsl(var(--lime) / 0.4)',
+              boxShadow: '0 20px 60px -12px hsl(var(--lime) / 0.35)',
+            }}
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
           >
-            {/* Decorative circles */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-primary/10" />
-            <div className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full bg-accent/10" />
+            <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--lime) / 0.2) 0%, transparent 70%)' }} />
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--amber) / 0.15) 0%, transparent 70%)' }} />
 
             <motion.div
               className="relative"
@@ -47,16 +50,16 @@ export const WelcomePopup = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.15 }}
             >
-              <div className="w-16 h-16 mx-auto eco-gradient rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                <Recycle className="w-8 h-8 text-primary-foreground" />
+              <div className="w-16 h-16 mx-auto eco-gradient rounded-2xl flex items-center justify-center mb-4">
+                <Recycle className="w-8 h-8" style={{ color: 'hsl(var(--forest-deep))' }} strokeWidth={2.4} />
               </div>
 
-              <h2 className="text-2xl font-bold text-foreground">Welcome to TrashCash! 🌱</h2>
-              <p className="text-muted-foreground text-sm mt-2 leading-relaxed">
+              <h2 className="text-2xl font-bold text-cream">Welcome to TrashCash! 🌱</h2>
+              <p className="text-cream-muted text-sm mt-2 leading-relaxed">
                 Turn your waste into tokens and spend them on food, entertainment, and more!
               </p>
 
-              <div className="flex items-center justify-center gap-4 my-5">
+              <div className="flex items-center justify-center gap-2 my-5 flex-wrap">
                 {['♻️ Recycle', '🪙 Earn', '🎉 Enjoy'].map((step, i) => (
                   <motion.div
                     key={step}
@@ -65,13 +68,13 @@ export const WelcomePopup = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 + i * 0.1 }}
                   >
-                    <span className="text-xs font-medium bg-secondary px-2 py-1 rounded-full">{step}</span>
-                    {i < 2 && <ArrowRight className="w-3 h-3 text-muted-foreground" />}
+                    <span className="pill-outline">{step}</span>
+                    {i < 2 && <ArrowRight className="w-3 h-3 text-cream-muted" />}
                   </motion.div>
                 ))}
               </div>
 
-              <Button onClick={close} className="eco-gradient text-primary-foreground px-8 h-11 text-base font-semibold">
+              <Button onClick={close} className="eco-gradient px-8 h-11 text-base font-bold">
                 <Sparkles className="w-4 h-4 mr-2" /> Let's Go!
               </Button>
             </motion.div>
