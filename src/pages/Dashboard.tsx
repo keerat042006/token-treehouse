@@ -102,7 +102,7 @@ const DashboardContent = () => {
                   >
                     <CountUp end={user.tokens} />
                   </span>
-                  <span className="text-2xl font-bold text-eco-blue/70">TC</span>
+                  <span className="text-2xl font-bold text-eco-blue/70">TCC</span>
                   <span className="coin-spin ml-1 inline-flex">
                     <Coins className="w-7 h-7 text-eco-amber" />
                   </span>
@@ -142,7 +142,7 @@ const DashboardContent = () => {
             <QuickAction
               icon={Gift}
               title="Redeem Tokens"
-              desc="Exchange TC for rewards"
+              desc="Exchange TCC for rewards"
               color="hsl(var(--eco-green))"
               onClick={() => navigate('/marketplace')}
             />
@@ -197,7 +197,7 @@ const DashboardContent = () => {
                       <td className="py-3 text-sm text-muted-foreground-2">{s.date}</td>
                       <td className="py-3 text-sm font-semibold text-white">{s.type}</td>
                       <td className="py-3 text-sm text-white">{s.weight} kg</td>
-                      <td className="py-3 text-sm font-bold text-eco-amber text-right">+{s.tokens} TC</td>
+                      <td className="py-3 text-sm font-bold text-eco-amber text-right">+{s.tokens} TCC</td>
                       <td className="py-3 text-right">
                         {s.status === 'verified' ? (
                           <span className="pill-status-verified"><CheckCircle2 className="w-3 h-3" /> Verified</span>
@@ -232,7 +232,7 @@ const DashboardContent = () => {
                     <p className="text-sm font-semibold text-white truncate">{l.name}</p>
                     <p className="text-[11px] text-muted-foreground-2">Rank #{l.rank}</p>
                   </div>
-                  <span className="text-sm font-bold text-eco-amber">{l.tc} TC</span>
+                  <span className="text-sm font-bold text-eco-amber">{l.tc} TCC</span>
                 </div>
               ))}
             </div>
@@ -265,7 +265,7 @@ const DashboardContent = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-bold text-white">{r.name}</p>
-                    <p className="text-xs text-eco-amber font-semibold mt-0.5">{r.cost} TC</p>
+                    <p className="text-xs text-eco-amber font-semibold mt-0.5">{r.cost} TCC</p>
                   </div>
                   <Button size="sm" className="btn-eco h-8 text-xs">Redeem</Button>
                 </div>
@@ -306,7 +306,7 @@ const TierRing = ({ progress, level, tokens, target }: { progress: number; level
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <Award className="w-4 h-4 text-eco-amber mb-1" />
         <span className="text-xs font-bold text-white">{level}</span>
-        <span className="text-[10px] text-muted-foreground-2">{tokens}/{target} TC</span>
+        <span className="text-[10px] text-muted-foreground-2">{tokens}/{target} TCC</span>
       </div>
     </div>
   );
@@ -395,7 +395,7 @@ const LoginScreen = () => {
             Turn your <span className="text-eco-blue">waste</span> into a real <span className="text-eco-amber">wallet</span>.
           </h1>
           <p className="text-muted-foreground-2 text-lg mt-5 leading-relaxed">
-            EcoFusion is a modern circular economy platform. Recycle, earn TC tokens at live market rates, and redeem at 200+ partners.
+            EcoFusion is a modern circular economy platform. Recycle, earn TCC tokens at live market rates, and redeem at 200+ partners.
           </p>
           <div className="flex items-center gap-3 mt-7">
             <Button onClick={() => user.loginDemo()} className="btn-eco h-12 px-6 text-base font-bold">
@@ -418,7 +418,7 @@ const LoginScreen = () => {
             <p className="section-label">Demo wallet preview</p>
             <div className="flex items-baseline gap-2 mt-2">
               <span className="font-extrabold text-eco-blue" style={{ fontSize: '64px', textShadow: '0 0 32px hsl(var(--eco-blue) / 0.45)' }}>342</span>
-              <span className="text-xl font-bold text-eco-blue/70">TC</span>
+              <span className="text-xl font-bold text-eco-blue/70">TCC</span>
               <Coins className="w-6 h-6 text-eco-amber coin-spin ml-2" />
             </div>
             <p className="text-eco-amber font-semibold mt-1">≈ ₹342.00 INR</p>
@@ -438,7 +438,7 @@ const LoginScreen = () => {
             <div className="mt-5 surface-raised p-4 flex items-center gap-3">
               <ShoppingBag className="w-5 h-5 text-eco-amber" />
               <div>
-                <p className="text-xs font-semibold text-white">Plant a Tree • 10 TC</p>
+                <p className="text-xs font-semibold text-white">Plant a Tree • 10 TCC</p>
                 <p className="text-[11px] text-muted-foreground-2">Trending in Marketplace</p>
               </div>
             </div>

@@ -75,7 +75,7 @@ export const CelebrationModal = ({ open, onClose, tokens, title = 'Tokens Earned
             <div className="flex items-center justify-center gap-2">
               <Coins className="w-6 h-6 text-eco-amber coin-spin" />
               <span className="text-4xl font-bold text-eco-amber" style={{ textShadow: '0 0 20px hsl(var(--eco-amber) / 0.5)' }}>+{tokens}</span>
-              <span className="text-lg font-bold text-eco-amber/70">TC</span>
+              <span className="text-lg font-bold text-eco-amber/70">TCC</span>
             </div>
           </motion.div>
 

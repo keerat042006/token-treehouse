@@ -109,7 +109,7 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
 
                 <span className="token-pill hidden sm:inline-flex">
                   <span className="coin-spin inline-flex"><Coins className="w-3.5 h-3.5" /></span>
-                  {user.tokens} TC
+                  {user.tokens} TCC
                 </span>
 
                 <div className="hidden md:flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl surface-raised">

@@ -59,7 +59,7 @@ const Leaderboard = () => {
               >
                 <div className={`text-4xl lg:text-5xl mb-2 ${isFirst ? 'animate-bounce' : ''}`}>{medals[i]}</div>
                 <p className="text-xs lg:text-sm font-bold text-white text-center truncate w-full px-1">{p.name}</p>
-                <p className="text-xs text-eco-amber font-bold mt-0.5 flex items-center gap-1"><Coins className="w-3 h-3" /> {p.tc} TC</p>
+                <p className="text-xs text-eco-amber font-bold mt-0.5 flex items-center gap-1"><Coins className="w-3 h-3" /> {p.tc} TCC</p>
                 <div
                   className={`mt-3 w-full ${heights[i]} rounded-t-2xl flex items-start justify-center pt-2 relative overflow-hidden`}
                   style={{
@@ -101,7 +101,7 @@ const Leaderboard = () => {
                     <p className="text-[11px] text-muted-foreground-2">{p.city} • {p.tier}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-eco-amber">{p.tc} TC</p>
+                    <p className="text-sm font-bold text-eco-amber">{p.tc} TCC</p>
                     <p className="text-[11px] text-muted-foreground-2">{p.kg} kg</p>
                   </div>
                 </div>

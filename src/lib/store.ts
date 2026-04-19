@@ -90,7 +90,7 @@ export const SAMPLE_USER = {
   name: 'Arjun Sharma',
   email: 'arjun@trashcash.in',
   phone: '+91 98765 43210',
-  tokens: 342,
+  tokens: 422,
   level: 'Silver' as const,
   totalWasteKg: 47.5,
   submissions: [

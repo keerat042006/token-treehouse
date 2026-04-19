@@ -10,7 +10,7 @@ export const TokenBadge = ({ amount, size = 'md' }: { amount: number; size?: 'sm
   return (
     <span className={`token-pill ${sz}`}>
       <span className="coin-spin inline-flex"><Coins className={ic} /></span>
-      {amount} TC
+      {amount} TCC
     </span>
   );
 };

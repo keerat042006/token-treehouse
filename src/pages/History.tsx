@@ -39,7 +39,7 @@ const History = () => {
                     <p className="text-sm font-semibold text-white">{s.type} • {s.weight} kg</p>
                     <p className="text-[11px] text-muted-foreground-2">{s.date} • {s.method}</p>
                   </div>
-                  <span className="pill-status-verified"><CheckCircle2 className="w-3 h-3" /> +{s.tokens} TC</span>
+                  <span className="pill-status-verified"><CheckCircle2 className="w-3 h-3" /> +{s.tokens} TCC</span>
                 </motion.div>
               ))}
             </div>
@@ -108,7 +108,7 @@ const History = () => {
                     </td>
                     <td className="py-3 text-xs text-muted-foreground-2 capitalize">{tx.category || '—'}</td>
                     <td className={`py-3 text-sm font-bold text-right ${tx.type === 'earned' ? 'text-eco-green' : 'text-eco-coral'}`}>
-                      {tx.type === 'earned' ? '+' : '-'}{tx.amount} TC
+                      {tx.type === 'earned' ? '+' : '-'}{tx.amount} TCC
                     </td>
                   </tr>
                 ))}

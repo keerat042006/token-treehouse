@@ -150,7 +150,7 @@ const Pickup = () => {
                             <p className="text-xs text-muted-foreground-2">{p.timeSlot} · {p.date}</p>
                             {p.agent && <p className="text-xs mt-1 text-white">Agent: <span className="font-semibold text-eco-blue">{p.agent}</span></p>}
                           </div>
-                          <span className="token-pill text-xs px-2.5 py-1">+{p.tokens} TC</span>
+                          <span className="token-pill text-xs px-2.5 py-1">+{p.tokens} TCC</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                           {statusSteps.map((s, i) => {
