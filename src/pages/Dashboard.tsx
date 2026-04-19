@@ -90,7 +90,7 @@ const DashboardContent = () => {
 
             <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
-                <p className="section-label">Token Wallet</p>
+                <p className="section-label">TrashCash Tokens</p>
                 <div className="flex items-baseline gap-2 mt-2">
                   <span
                     className="font-extrabold leading-none text-eco-blue"
@@ -415,13 +415,13 @@ const LoginScreen = () => {
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="wallet-hero p-8 relative overflow-hidden">
           <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--eco-blue) / 0.25), transparent 70%)' }} />
           <div className="relative">
-            <p className="section-label">Demo wallet preview</p>
+            <p className="section-label">TrashCash Tokens</p>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-extrabold text-eco-blue" style={{ fontSize: '64px', textShadow: '0 0 32px hsl(var(--eco-blue) / 0.45)' }}>342</span>
+              <span className="font-extrabold text-eco-blue" style={{ fontSize: '64px', textShadow: '0 0 32px hsl(var(--eco-blue) / 0.45)' }}>422</span>
               <span className="text-xl font-bold text-eco-blue/70">TCC</span>
               <Coins className="w-6 h-6 text-eco-amber coin-spin ml-2" />
             </div>
-            <p className="text-eco-amber font-semibold mt-1">≈ ₹342.00 INR</p>
+            <p className="text-eco-amber font-semibold mt-1">≈ ₹422.00 INR</p>
             <div className="grid grid-cols-3 gap-2 mt-6">
               {[
                 { l: '47.5 kg', s: 'Recycled', i: Recycle },
