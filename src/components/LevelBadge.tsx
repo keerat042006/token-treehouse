@@ -1,19 +1,17 @@
 import { Recycle } from 'lucide-react';
 
 const styles = {
-  Bronze: { bg: 'hsl(28 78% 58%)', fg: '#1a1208', label: 'Bronze Recycler' },
-  Silver: { bg: 'hsl(var(--primary))', fg: '#ffffff', label: 'Silver Recycler' },
-  Gold: { bg: 'hsl(var(--amber))', fg: '#1a1208', label: 'Gold Recycler' },
+  Bronze: { cls: 'bronze-shimmer', label: 'Bronze Recycler' },
+  Silver: { cls: 'silver-shimmer', label: 'Silver Recycler' },
+  Gold: { cls: 'gold-shimmer', label: 'Gold Recycler' },
 };
 
-export const LevelBadge = ({ level }: { level: 'Bronze' | 'Silver' | 'Gold' }) => {
+export const LevelBadge = ({ level, size = 'md' }: { level: 'Bronze' | 'Silver' | 'Gold'; size?: 'sm' | 'md' }) => {
   const s = styles[level];
+  const sz = size === 'sm' ? 'px-2 py-0.5 text-[10px]' : 'px-2.5 py-1 text-xs';
   return (
-    <span
-      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold"
-      style={{ background: s.bg, color: s.fg, boxShadow: `0 4px 14px -4px ${s.bg}` }}
-    >
-      <Recycle className="w-3 h-3" strokeWidth={2.6} />
+    <span className={`inline-flex items-center gap-1.5 rounded-full font-bold ${sz} ${s.cls}`}>
+      <Recycle className={size === 'sm' ? 'w-2.5 h-2.5' : 'w-3 h-3'} strokeWidth={2.6} />
       {s.label}
     </span>
   );
