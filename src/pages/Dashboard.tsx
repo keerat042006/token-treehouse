@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useUser } from '@/lib/UserContext';
@@ -7,9 +8,13 @@ import { WelcomePopup } from '@/components/WelcomePopup';
 import { CountUp } from '@/components/CountUp';
 import { LevelBadge } from '@/components/LevelBadge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
 import {
   Recycle, Truck, Gift, Coins, Sparkles, ArrowUpRight, Leaf, TrendingUp,
   CheckCircle2, Clock, Trophy, Award, IndianRupee, Footprints, ShoppingBag,
+  Mail, Lock, User as UserIcon, LogIn, UserPlus,
 } from 'lucide-react';
 import { Area, AreaChart, ResponsiveContainer, Bar, BarChart } from 'recharts';
 
