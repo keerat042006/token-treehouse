@@ -56,11 +56,11 @@ export const WelcomePopup = () => {
 
               <h2 className="text-2xl font-bold text-white">Welcome to EcoFusion 🌱</h2>
               <p className="text-muted-foreground-2 text-sm mt-2 leading-relaxed">
-                The fintech-grade circular economy platform. Recycle waste, earn TC tokens, redeem real rewards.
+                The fintech-grade circular economy platform. Recycle waste, earn TCC tokens, redeem real rewards.
               </p>
 
               <div className="flex items-center justify-center gap-2 my-5 flex-wrap">
-                {['♻️ Recycle', '🪙 Earn TC', '🎁 Redeem'].map((step, i) => (
+                {['♻️ Recycle', '🪙 Earn TCC', '🎁 Redeem'].map((step, i) => (
                   <motion.div
                     key={step}
                     className="flex items-center gap-1"

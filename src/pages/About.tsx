@@ -4,7 +4,7 @@ import { Recycle, Coins, Gift, Globe2, ShieldCheck, Sparkles } from 'lucide-reac
 
 const features = [
   { icon: Recycle, title: 'Recycle anywhere', desc: 'Drop at 200+ partner cafés or schedule a doorstep pickup.', color: 'hsl(var(--eco-blue))' },
-  { icon: Coins, title: 'Real-time TC tokens', desc: 'Earn TrashCash tokens at live market rates. 1 TC = ₹1.', color: 'hsl(var(--eco-amber))' },
+  { icon: Coins, title: 'Real-time TCC tokens', desc: 'Earn TrashCash tokens at live market rates. 1 TCC = ₹1.', color: 'hsl(var(--eco-amber))' },
   { icon: Gift, title: 'Spend like cash', desc: 'Vouchers, café orders, entertainment, donations & more.', color: 'hsl(var(--eco-green))' },
   { icon: Globe2, title: 'Verified impact', desc: 'Every kg recycled is tracked, verified & reported transparently.', color: 'hsl(var(--eco-teal))' },
   { icon: ShieldCheck, title: 'Bank-grade security', desc: 'Your wallet & data are encrypted end-to-end.', color: 'hsl(var(--eco-coral))' },

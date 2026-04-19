@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useUser } from '@/lib/UserContext';
@@ -7,9 +8,13 @@ import { WelcomePopup } from '@/components/WelcomePopup';
 import { CountUp } from '@/components/CountUp';
 import { LevelBadge } from '@/components/LevelBadge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
 import {
   Recycle, Truck, Gift, Coins, Sparkles, ArrowUpRight, Leaf, TrendingUp,
   CheckCircle2, Clock, Trophy, Award, IndianRupee, Footprints, ShoppingBag,
+  Mail, Lock, User as UserIcon, LogIn, UserPlus,
 } from 'lucide-react';
 import { Area, AreaChart, ResponsiveContainer, Bar, BarChart } from 'recharts';
 
@@ -90,7 +95,7 @@ const DashboardContent = () => {
 
             <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
-                <p className="section-label">Token Wallet</p>
+                <p className="section-label">TrashCash Tokens</p>
                 <div className="flex items-baseline gap-2 mt-2">
                   <span
                     className="font-extrabold leading-none text-eco-blue"
@@ -102,7 +107,7 @@ const DashboardContent = () => {
                   >
                     <CountUp end={user.tokens} />
                   </span>
-                  <span className="text-2xl font-bold text-eco-blue/70">TC</span>
+                  <span className="text-2xl font-bold text-eco-blue/70">TCC</span>
                   <span className="coin-spin ml-1 inline-flex">
                     <Coins className="w-7 h-7 text-eco-amber" />
                   </span>
@@ -142,7 +147,7 @@ const DashboardContent = () => {
             <QuickAction
               icon={Gift}
               title="Redeem Tokens"
-              desc="Exchange TC for rewards"
+              desc="Exchange TCC for rewards"
               color="hsl(var(--eco-green))"
               onClick={() => navigate('/marketplace')}
             />
@@ -197,7 +202,7 @@ const DashboardContent = () => {
                       <td className="py-3 text-sm text-muted-foreground-2">{s.date}</td>
                       <td className="py-3 text-sm font-semibold text-white">{s.type}</td>
                       <td className="py-3 text-sm text-white">{s.weight} kg</td>
-                      <td className="py-3 text-sm font-bold text-eco-amber text-right">+{s.tokens} TC</td>
+                      <td className="py-3 text-sm font-bold text-eco-amber text-right">+{s.tokens} TCC</td>
                       <td className="py-3 text-right">
                         {s.status === 'verified' ? (
                           <span className="pill-status-verified"><CheckCircle2 className="w-3 h-3" /> Verified</span>
@@ -232,7 +237,7 @@ const DashboardContent = () => {
                     <p className="text-sm font-semibold text-white truncate">{l.name}</p>
                     <p className="text-[11px] text-muted-foreground-2">Rank #{l.rank}</p>
                   </div>
-                  <span className="text-sm font-bold text-eco-amber">{l.tc} TC</span>
+                  <span className="text-sm font-bold text-eco-amber">{l.tc} TCC</span>
                 </div>
               ))}
             </div>
@@ -265,7 +270,7 @@ const DashboardContent = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-bold text-white">{r.name}</p>
-                    <p className="text-xs text-eco-amber font-semibold mt-0.5">{r.cost} TC</p>
+                    <p className="text-xs text-eco-amber font-semibold mt-0.5">{r.cost} TCC</p>
                   </div>
                   <Button size="sm" className="btn-eco h-8 text-xs">Redeem</Button>
                 </div>
@@ -306,7 +311,7 @@ const TierRing = ({ progress, level, tokens, target }: { progress: number; level
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <Award className="w-4 h-4 text-eco-amber mb-1" />
         <span className="text-xs font-bold text-white">{level}</span>
-        <span className="text-[10px] text-muted-foreground-2">{tokens}/{target} TC</span>
+        <span className="text-[10px] text-muted-foreground-2">{tokens}/{target} TCC</span>
       </div>
     </div>
   );
@@ -377,6 +382,27 @@ const ImpactCard = ({
 
 const LoginScreen = () => {
   const user = useUser();
+  const [mode, setMode] = useState<'login' | 'register'>('login');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (mode === 'login') {
+      if (!email || !password) return toast.error('Enter email and password');
+      const derivedName = email.split('@')[0].replace(/[^a-zA-Z]/g, ' ').trim() || 'Recycler';
+      user.login(derivedName.charAt(0).toUpperCase() + derivedName.slice(1), email, '');
+      toast.success('Welcome back!');
+    } else {
+      if (!name || !email || !password) return toast.error('Fill all fields');
+      if (password !== confirm) return toast.error('Passwords do not match');
+      user.login(name, email, '');
+      toast.success('Account created — welcome to EcoFusion!');
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="px-6 h-16 flex items-center border-b border-border bg-surface-nav/80 backdrop-blur-xl">
@@ -388,23 +414,14 @@ const LoginScreen = () => {
         </div>
       </header>
       <main className="flex-1 grid lg:grid-cols-2 items-center gap-8 max-w-[1200px] mx-auto w-full px-6 py-10">
-        <WelcomePopup />
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <span className="pill-outline mb-5"><Sparkles className="w-3 h-3 text-eco-blue" /> The fintech of recycling</span>
           <h1 className="text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.05]">
             Turn your <span className="text-eco-blue">waste</span> into a real <span className="text-eco-amber">wallet</span>.
           </h1>
           <p className="text-muted-foreground-2 text-lg mt-5 leading-relaxed">
-            EcoFusion is a modern circular economy platform. Recycle, earn TC tokens at live market rates, and redeem at 200+ partners.
+            EcoFusion is a modern circular economy platform. Recycle, earn TrashCash (TCC) tokens at live market rates, and redeem at 200+ partners.
           </p>
-          <div className="flex items-center gap-3 mt-7">
-            <Button onClick={() => user.loginDemo()} className="btn-eco h-12 px-6 text-base font-bold">
-              <Award className="w-4 h-4 mr-2" /> Try Demo Account
-            </Button>
-            <Button variant="outline" className="h-12 px-6 border-border bg-surface-card hover:bg-surface-raised">
-              Learn more
-            </Button>
-          </div>
           <div className="flex items-center gap-6 mt-8 text-xs text-muted-foreground-2">
             <div><span className="text-white font-bold">12K+</span> recyclers</div>
             <div><span className="text-white font-bold">₹4.2M</span> tokens issued</div>
@@ -412,36 +429,98 @@ const LoginScreen = () => {
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="wallet-hero p-8 relative overflow-hidden">
-          <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--eco-blue) / 0.25), transparent 70%)' }} />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="relative rounded-3xl p-7 lg:p-8 overflow-hidden"
+          style={{
+            background: 'linear-gradient(160deg, hsl(var(--surface-card) / 0.85), hsl(var(--surface-base) / 0.85))',
+            border: '1px solid hsl(var(--eco-blue) / 0.35)',
+            boxShadow: '0 20px 60px -20px hsl(var(--eco-blue) / 0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
+            backdropFilter: 'blur(20px)',
+          }}
+        >
+          <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--eco-blue) / 0.25), transparent 70%)' }} />
           <div className="relative">
-            <p className="section-label">Demo wallet preview</p>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-extrabold text-eco-blue" style={{ fontSize: '64px', textShadow: '0 0 32px hsl(var(--eco-blue) / 0.45)' }}>342</span>
-              <span className="text-xl font-bold text-eco-blue/70">TC</span>
-              <Coins className="w-6 h-6 text-eco-amber coin-spin ml-2" />
-            </div>
-            <p className="text-eco-amber font-semibold mt-1">≈ ₹342.00 INR</p>
-            <div className="grid grid-cols-3 gap-2 mt-6">
-              {[
-                { l: '47.5 kg', s: 'Recycled', i: Recycle },
-                { l: '6', s: 'Pickups', i: Truck },
-                { l: '950', s: 'Points', i: Leaf },
-              ].map(({ l, s, i: I }) => (
-                <div key={s} className="surface-raised p-3 text-center">
-                  <I className="w-4 h-4 mx-auto text-eco-blue mb-1" />
-                  <p className="text-sm font-bold text-white">{l}</p>
-                  <p className="text-[10px] text-muted-foreground-2 uppercase tracking-wider">{s}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 surface-raised p-4 flex items-center gap-3">
-              <ShoppingBag className="w-5 h-5 text-eco-amber" />
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center btn-eco">
+                <Recycle className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </div>
               <div>
-                <p className="text-xs font-semibold text-white">Plant a Tree • 10 TC</p>
-                <p className="text-[11px] text-muted-foreground-2">Trending in Marketplace</p>
+                <p className="font-extrabold text-white text-lg leading-none">EcoFusion</p>
+                <p className="text-[10px] font-semibold text-eco-amber tracking-[0.18em] uppercase mt-1">Recycle • Earn</p>
               </div>
             </div>
+
+            <div className="flex p-1 rounded-xl bg-surface-raised border border-border mb-5">
+              <button
+                type="button"
+                onClick={() => setMode('login')}
+                className={`flex-1 py-2 rounded-lg text-sm font-bold transition ${mode === 'login' ? 'bg-eco-blue text-white shadow-lg' : 'text-muted-foreground-2 hover:text-white'}`}
+              >
+                <LogIn className="w-3.5 h-3.5 inline mr-1.5" /> Login
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode('register')}
+                className={`flex-1 py-2 rounded-lg text-sm font-bold transition ${mode === 'register' ? 'bg-eco-blue text-white shadow-lg' : 'text-muted-foreground-2 hover:text-white'}`}
+              >
+                <UserPlus className="w-3.5 h-3.5 inline mr-1.5" /> Register
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              {mode === 'register' && (
+                <div className="space-y-1.5">
+                  <Label className="text-xs text-muted-foreground-2 font-semibold">Name</Label>
+                  <div className="relative">
+                    <UserIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
+                    <Input value={name} onChange={e => setName(e.target.value)} placeholder="Arjun Sharma" className="pl-9 bg-surface-raised border-border text-white" />
+                  </div>
+                </div>
+              )}
+              <div className="space-y-1.5">
+                <Label className="text-xs text-muted-foreground-2 font-semibold">Email</Label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
+                  <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@ecofusion.in" className="pl-9 bg-surface-raised border-border text-white" />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-muted-foreground-2 font-semibold">Password</Label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
+                  <Input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className="pl-9 bg-surface-raised border-border text-white" />
+                </div>
+              </div>
+              {mode === 'register' && (
+                <div className="space-y-1.5">
+                  <Label className="text-xs text-muted-foreground-2 font-semibold">Confirm Password</Label>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
+                    <Input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="••••••••" className="pl-9 bg-surface-raised border-border text-white" />
+                  </div>
+                </div>
+              )}
+
+              <Button type="submit" className="btn-eco w-full h-11 font-bold mt-2">
+                {mode === 'login' ? 'Login' : 'Create Account'}
+              </Button>
+            </form>
+
+            <div className="relative my-5">
+              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border" /></div>
+              <div className="relative flex justify-center"><span className="bg-surface-card px-3 text-[10px] font-semibold text-muted-foreground-2 uppercase tracking-wider">or</span></div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => user.loginDemo()}
+              className="w-full h-11 border-border bg-surface-raised hover:bg-surface-card text-white font-semibold"
+            >
+              Continue as Guest →
+            </Button>
           </div>
         </motion.div>
       </main>

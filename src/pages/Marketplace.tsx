@@ -61,10 +61,10 @@ const Marketplace = () => {
     if (success) {
       setRedeemed(item.id);
       fireConfetti();
-      toast.success(`Redeemed ${item.name}!`, { description: `-${item.cost} TC from your wallet` });
+      toast.success(`Redeemed ${item.name}!`, { description: `-${item.cost} TCC from your wallet` });
       setTimeout(() => setRedeemed(null), 1800);
     } else {
-      toast.error('Not enough tokens', { description: `You need ${item.cost - user.tokens} more TC` });
+      toast.error('Not enough tokens', { description: `You need ${item.cost - user.tokens} more TCC` });
     }
   };
 
@@ -75,10 +75,10 @@ const Marketplace = () => {
           <div>
             <p className="section-label">Spend tokens</p>
             <h1 className="text-3xl lg:text-4xl font-extrabold text-white mt-1">Rewards Marketplace 🎁</h1>
-            <p className="text-muted-foreground-2 text-sm mt-1">Redeem TC for vouchers, food, fun & impact</p>
+            <p className="text-muted-foreground-2 text-sm mt-1">Redeem TCC for vouchers, food, fun & impact</p>
           </div>
           <div className="token-pill text-base px-4 py-2">
-            <Coins className="w-4 h-4 coin-spin" /> Balance: {user.tokens} TC
+            <Coins className="w-4 h-4 coin-spin" /> Balance: {user.tokens} TCC
           </div>
         </div>
 
@@ -150,7 +150,7 @@ const Marketplace = () => {
                   <div className="flex items-center gap-1.5">
                     <Coins className="w-4 h-4 text-eco-amber" />
                     <span className="text-base font-bold text-eco-amber">{item.cost}</span>
-                    <span className="text-xs text-muted-foreground-2">TC</span>
+                    <span className="text-xs text-muted-foreground-2">TCC</span>
                   </div>
                   {redeemed === item.id ? (
                     <motion.div

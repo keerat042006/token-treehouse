@@ -54,7 +54,7 @@ const SellWaste = () => {
         />
 
         <div className="mb-6">
-          <p className="section-label">Earn TC</p>
+          <p className="section-label">Earn TCC</p>
           <h1 className="text-3xl lg:text-4xl font-extrabold text-white mt-1">Sell Waste ♻️</h1>
           <p className="text-muted-foreground-2 text-sm mt-1">Drop waste at any partner café to earn tokens instantly</p>
         </div>
@@ -138,7 +138,7 @@ const SellWaste = () => {
                         <p className="text-xs text-muted-foreground-2 uppercase tracking-wider font-semibold">You'll earn</p>
                         <p className="text-4xl font-extrabold text-eco-amber mt-1 flex items-center justify-center gap-2" style={{ textShadow: '0 0 20px hsl(var(--eco-amber) / 0.5)' }}>
                           <Coins className="w-7 h-7 coin-spin" />
-                          {Math.round(parseFloat(weight) * getMarketRate(selected))} TC
+                          {Math.round(parseFloat(weight) * getMarketRate(selected))} TCC
                         </p>
                       </motion.div>
                     )}
@@ -174,7 +174,7 @@ const SellWaste = () => {
             </div>
             <div className="surface-flat p-5 wallet-hero">
               <p className="section-label">Your wallet</p>
-              <p className="text-3xl font-extrabold text-eco-blue mt-2">{user.tokens} <span className="text-base text-eco-blue/70">TC</span></p>
+              <p className="text-3xl font-extrabold text-eco-blue mt-2">{user.tokens} <span className="text-base text-eco-blue/70">TCC</span></p>
               <p className="text-xs text-eco-amber mt-1">≈ ₹{user.tokens.toFixed(2)} INR</p>
             </div>
           </div>

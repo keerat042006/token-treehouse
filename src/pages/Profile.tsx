@@ -71,7 +71,7 @@ const Profile = () => {
           <div className="grid grid-cols-3 lg:grid-cols-1 gap-3">
             <StatCard icon={Recycle} value={user.submissions.length + user.pickups.length} label="Submissions" />
             <StatCard icon={Leaf} value={user.totalWasteKg} label="Kg Recycled" />
-            <StatCard icon={Award} value={user.tokens} label="TC Balance" amber />
+            <StatCard icon={Award} value={user.tokens} label="TCC Balance" amber />
           </div>
         </div>
       </PageWrapper>
