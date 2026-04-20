@@ -3,10 +3,13 @@ import { ReactNode, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard, ShoppingBag, Clock3, Trophy, Info, Recycle, Truck,
-  Bell, Menu, X, Coins, LogOut, Gamepad2,
+  Menu, X, Coins, LogOut, Gamepad2,
 } from 'lucide-react';
 import { useUser } from '@/lib/UserContext';
 import { LevelBadge } from '@/components/LevelBadge';
+import { NotificationBell } from '@/components/NotificationBell';
+import { SupportDrawer } from '@/components/SupportDrawer';
+import { XPBar } from '@/components/XPBar';
 
 const nav = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -64,9 +67,11 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
   const user = useUser();
   const { pathname } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SupportDrawer open={supportOpen} onClose={() => setSupportOpen(false)} userName={user.name || 'Friend'} />
       {/* Top Nav */}
       <header
         className="sticky top-0 z-40 backdrop-blur-xl"
@@ -100,13 +105,7 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
           <div className="flex items-center gap-2 sm:gap-3">
             {user.isLoggedIn && (
               <>
-                <button
-                  className="relative w-10 h-10 rounded-xl flex items-center justify-center surface-raised hover:border-eco-blue/40 transition"
-                  aria-label="Notifications"
-                >
-                  <Bell className="w-4.5 h-4.5 text-muted-foreground-2" />
-                  <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-eco-amber" style={{ boxShadow: '0 0 8px hsl(var(--eco-amber))' }} />
-                </button>
+                <NotificationBell />
 
                 <span className="token-pill hidden sm:inline-flex">
                   <span className="coin-spin inline-flex"><Coins className="w-3.5 h-3.5" /></span>
@@ -146,13 +145,19 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
           style={{ height: 'calc(100vh - 4rem)' }}
         >
           <div className="flex-1 overflow-y-auto">
+            {user.isLoggedIn && <XPBar current={user.tokens} target={1000} fromLabel="Silver" toLabel="Gold" />}
             <p className="section-label px-6 pt-5 pb-2">Menu</p>
             <Sidebar />
           </div>
-          <div className="p-4 m-3 rounded-2xl surface-raised">
+          <div className="p-4 m-3 rounded-2xl glass-deep">
             <p className="text-xs font-bold text-white">Need help?</p>
             <p className="text-[11px] text-muted-foreground-2 mt-0.5">Chat with our eco-team 24/7</p>
-            <button className="mt-3 text-xs font-semibold text-eco-blue hover:underline">Open support →</button>
+            <button
+              onClick={() => setSupportOpen(true)}
+              className="mt-3 text-xs font-semibold text-eco-green hover:underline"
+            >
+              Open support →
+            </button>
           </div>
         </aside>
 

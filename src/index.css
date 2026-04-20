@@ -75,16 +75,18 @@
   }
 
   html, body, #root {
-    @apply bg-background text-foreground antialiased;
+    @apply text-foreground antialiased;
     font-family: 'Inter', 'DM Sans', sans-serif;
+    background-color: hsl(var(--background));
   }
 
   body {
     background-image:
-      radial-gradient(ellipse 1200px 600px at 80% -10%, hsl(var(--eco-blue) / 0.10) 0%, transparent 60%),
-      radial-gradient(ellipse 900px 500px at -10% 110%, hsl(var(--eco-amber) / 0.06) 0%, transparent 60%);
+      radial-gradient(ellipse 1200px 600px at 80% -10%, hsl(var(--eco-blue) / 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 900px 500px at -10% 110%, hsl(var(--eco-amber) / 0.04) 0%, transparent 60%);
     background-attachment: fixed;
   }
+
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'DM Sans', 'Inter', sans-serif;
@@ -338,4 +340,29 @@
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
+
+  /* Premium glow text for metric numbers and TCC displays */
+  .text-glow-eco {
+    text-shadow: 0 0 20px rgba(0, 229, 160, 0.6), 0 0 60px rgba(0, 229, 160, 0.2);
+  }
+  .text-glow-amber {
+    text-shadow: 0 0 20px hsl(var(--eco-amber) / 0.6), 0 0 60px hsl(var(--eco-amber) / 0.2);
+  }
+  .text-glow-blue {
+    text-shadow: 0 0 20px hsl(var(--eco-blue) / 0.6), 0 0 60px hsl(var(--eco-blue) / 0.2);
+  }
+
+  /* Glassy card with backdrop blur over 3D background */
+  .glass-deep {
+    background: rgba(13, 33, 24, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 229, 160, 0.15);
+  }
+
+  /* Hexagon clip for badges */
+  .hexagon {
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+  }
 }
+

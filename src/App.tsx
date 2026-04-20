@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { UserProvider } from "@/lib/UserContext";
+import { EcoBackground } from "@/components/EcoBackground";
 import Dashboard from "./pages/Dashboard";
 import SellWaste from "./pages/SellWaste";
 import Pickup from "./pages/Pickup";
@@ -23,21 +24,24 @@ const App = () => (
       <UserProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/sell" element={<SellWaste />} />
-            <Route path="/pickup" element={<Pickup />} />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/redeem" element={<Marketplace />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/arcade" element={<Arcade />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <EcoBackground />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/sell" element={<SellWaste />} />
+              <Route path="/pickup" element={<Pickup />} />
+              <Route path="/marketplace" element={<Marketplace />} />
+              <Route path="/redeem" element={<Marketplace />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/arcade" element={<Arcade />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
       </UserProvider>
     </TooltipProvider>
   </QueryClientProvider>
