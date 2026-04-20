@@ -104,8 +104,6 @@ const ChartTooltipContent = React.forwardRef<
     {
       active,
       payload,
-      // @ts-expect-error recharts types vary by version
-      label,
       className,
       indicator = "dot",
       hideLabel = false,
@@ -117,7 +115,7 @@ const ChartTooltipContent = React.forwardRef<
       color,
       nameKey,
       labelKey,
-    },
+    }: any,
     ref,
   ) => {
     const { config } = useChart();
