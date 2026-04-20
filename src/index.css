@@ -75,16 +75,18 @@
   }
 
   html, body, #root {
-    @apply bg-background text-foreground antialiased;
+    @apply text-foreground antialiased;
     font-family: 'Inter', 'DM Sans', sans-serif;
+    background-color: hsl(var(--background));
   }
 
   body {
     background-image:
-      radial-gradient(ellipse 1200px 600px at 80% -10%, hsl(var(--eco-blue) / 0.10) 0%, transparent 60%),
-      radial-gradient(ellipse 900px 500px at -10% 110%, hsl(var(--eco-amber) / 0.06) 0%, transparent 60%);
+      radial-gradient(ellipse 1200px 600px at 80% -10%, hsl(var(--eco-blue) / 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 900px 500px at -10% 110%, hsl(var(--eco-amber) / 0.04) 0%, transparent 60%);
     background-attachment: fixed;
   }
+
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'DM Sans', 'Inter', sans-serif;
