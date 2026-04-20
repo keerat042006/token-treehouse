@@ -338,4 +338,29 @@
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
+
+  /* Premium glow text for metric numbers and TCC displays */
+  .text-glow-eco {
+    text-shadow: 0 0 20px rgba(0, 229, 160, 0.6), 0 0 60px rgba(0, 229, 160, 0.2);
+  }
+  .text-glow-amber {
+    text-shadow: 0 0 20px hsl(var(--eco-amber) / 0.6), 0 0 60px hsl(var(--eco-amber) / 0.2);
+  }
+  .text-glow-blue {
+    text-shadow: 0 0 20px hsl(var(--eco-blue) / 0.6), 0 0 60px hsl(var(--eco-blue) / 0.2);
+  }
+
+  /* Glassy card with backdrop blur over 3D background */
+  .glass-deep {
+    background: rgba(13, 33, 24, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 229, 160, 0.15);
+  }
+
+  /* Hexagon clip for badges */
+  .hexagon {
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+  }
 }
+
