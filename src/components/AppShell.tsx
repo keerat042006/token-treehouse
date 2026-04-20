@@ -67,9 +67,11 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
   const user = useUser();
   const { pathname } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SupportDrawer open={supportOpen} onClose={() => setSupportOpen(false)} userName={user.name || 'Friend'} />
       {/* Top Nav */}
       <header
         className="sticky top-0 z-40 backdrop-blur-xl"
@@ -103,13 +105,7 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
           <div className="flex items-center gap-2 sm:gap-3">
             {user.isLoggedIn && (
               <>
-                <button
-                  className="relative w-10 h-10 rounded-xl flex items-center justify-center surface-raised hover:border-eco-blue/40 transition"
-                  aria-label="Notifications"
-                >
-                  <Bell className="w-4.5 h-4.5 text-muted-foreground-2" />
-                  <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-eco-amber" style={{ boxShadow: '0 0 8px hsl(var(--eco-amber))' }} />
-                </button>
+                <NotificationBell />
 
                 <span className="token-pill hidden sm:inline-flex">
                   <span className="coin-spin inline-flex"><Coins className="w-3.5 h-3.5" /></span>
