@@ -19,6 +19,7 @@ interface UserContextType {
   requestPickup: (address: string, wasteType: string, weight: number, timeSlot: string) => void;
   updatePickupStatus: (id: string, status: PickupRequest['status']) => void;
   spendTokens: (amount: number, description: string, category: string) => boolean;
+  creditTokens: (amount: number, description: string, category: string) => void;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
