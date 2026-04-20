@@ -145,13 +145,19 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
           style={{ height: 'calc(100vh - 4rem)' }}
         >
           <div className="flex-1 overflow-y-auto">
+            {user.isLoggedIn && <XPBar current={user.tokens} target={1000} fromLabel="Silver" toLabel="Gold" />}
             <p className="section-label px-6 pt-5 pb-2">Menu</p>
             <Sidebar />
           </div>
-          <div className="p-4 m-3 rounded-2xl surface-raised">
+          <div className="p-4 m-3 rounded-2xl glass-deep">
             <p className="text-xs font-bold text-white">Need help?</p>
             <p className="text-[11px] text-muted-foreground-2 mt-0.5">Chat with our eco-team 24/7</p>
-            <button className="mt-3 text-xs font-semibold text-eco-blue hover:underline">Open support →</button>
+            <button
+              onClick={() => setSupportOpen(true)}
+              className="mt-3 text-xs font-semibold text-eco-green hover:underline"
+            >
+              Open support →
+            </button>
           </div>
         </aside>
 
