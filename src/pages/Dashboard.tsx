@@ -7,6 +7,8 @@ import { PageWrapper } from '@/components/PageWrapper';
 import { WelcomePopup } from '@/components/WelcomePopup';
 import { CountUp } from '@/components/CountUp';
 import { LevelBadge } from '@/components/LevelBadge';
+import { DailyChallenge } from '@/components/DailyChallenge';
+import { Achievements } from '@/components/Achievements';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -154,6 +156,11 @@ const DashboardContent = () => {
           </motion.div>
         </div>
 
+        {/* Daily Challenge */}
+        <motion.div variants={fadeItem}>
+          <DailyChallenge current={2.3} target={5} />
+        </motion.div>
+
         {/* Your Impact */}
         <motion.div variants={fadeItem}>
           <div className="flex items-end justify-between mb-3">
@@ -169,6 +176,11 @@ const DashboardContent = () => {
             <ImpactCard value={submissionsCount} label="Successful pickups" color="hsl(var(--eco-blue))" icon={Truck} chart="bar" data={spark(7)} />
             <ImpactCard value={user.tokens} prefix="₹" label="Total value earned" color="hsl(var(--eco-amber))" icon={IndianRupee} chart="bar" data={spark(11)} />
           </div>
+        </motion.div>
+
+        {/* Achievements */}
+        <motion.div variants={fadeItem}>
+          <Achievements />
         </motion.div>
 
         {/* Two-col: submissions + leaderboard */}
