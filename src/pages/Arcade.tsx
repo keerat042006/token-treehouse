@@ -54,18 +54,9 @@ const Arcade = () => {
 
   const handleWin = (tcc: number) => {
     if (tcc <= 0) return;
-    // Credit by submitting a fake "earned" tx via spendTokens negative? Use spendTokens negative isn't supported.
-    // We'll add via a tiny hack: call spendTokens(-tcc) ... won't work. Instead use submitWaste? No, that adds kg.
-    // Use a direct workaround: simulate winning by calling spendTokens with negative — not allowed. Add via toast only and credit via internal API.
-    // We'll piggyback through user.submitWaste? That would inflate kg. Instead, use a direct token credit:
-    // We don't have one — show a toast and ask user to claim via spendTokens-cancel. Cleanest: use toast + (-tcc) spend (will fail).
-    // Workaround: temporarily call spendTokens with a pseudo "refund" — fall back to manual.
     fireEcoConfetti();
-    toast.success(`🎉 You won ${tcc} TCC!`, { description: `Credited to your wallet from ${active?.name}` });
-    // Credit via hack: use loginDemo path is bad. Use a direct setter? No exposed. Workaround: add via a custom event the provider doesn't have.
-    // Simplest: refund-style spend negative isn't allowed. Use the 'submitWaste' helper? Avoid kg inflation.
-    // Add via spendTokens negative is blocked at < 0 check? We can call spendTokens(-tcc): tokens<amount -> if amount=-5, tokens(>=) so passes; subtracts -5 = +5. It works!
-    user.spendTokens(-tcc, `Won ${tcc} TCC at ${active?.name}`, 'arcade');
+    user.creditTokens(tcc, `Won ${tcc} TCC at ${active?.name}`, 'arcade');
+    toast.success(`🎉 You won ${tcc} TCC!`, { description: `Credited from ${active?.name}` });
   };
 
   return (

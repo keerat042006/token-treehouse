@@ -130,14 +130,25 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     return true;
   };
 
+  const creditTokens = (amount: number, description: string, category: string) => {
+    if (amount <= 0) return;
+    const tx: Transaction = {
+      id: uid(), type: 'earned', amount,
+      description, date: new Date().toISOString().slice(0, 10), category,
+    };
+    setTransactions(t => [tx, ...t]);
+    setTokens(tk => tk + amount);
+  };
+
   return (
     <UserContext.Provider value={{
       name, email, phone, tokens, level, totalWasteKg,
       submissions, pickups, transactions, isLoggedIn,
       login, loginDemo, logout, submitWaste, requestPickup,
-      updatePickupStatus, spendTokens,
+      updatePickupStatus, spendTokens, creditTokens,
     }}>
       {children}
     </UserContext.Provider>
   );
 };
+
