@@ -3,10 +3,13 @@ import { ReactNode, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard, ShoppingBag, Clock3, Trophy, Info, Recycle, Truck,
-  Bell, Menu, X, Coins, LogOut, Gamepad2,
+  Menu, X, Coins, LogOut, Gamepad2,
 } from 'lucide-react';
 import { useUser } from '@/lib/UserContext';
 import { LevelBadge } from '@/components/LevelBadge';
+import { NotificationBell } from '@/components/NotificationBell';
+import { SupportDrawer } from '@/components/SupportDrawer';
+import { XPBar } from '@/components/XPBar';
 
 const nav = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
