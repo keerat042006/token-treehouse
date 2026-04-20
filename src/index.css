@@ -77,13 +77,11 @@
   html, body, #root {
     @apply text-foreground antialiased;
     font-family: 'Inter', 'DM Sans', sans-serif;
-    background-color: hsl(var(--background));
+    background-color: #050d0a;
   }
 
   body {
-    background-image:
-      radial-gradient(ellipse 1200px 600px at 80% -10%, hsl(var(--eco-blue) / 0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 900px 500px at -10% 110%, hsl(var(--eco-amber) / 0.04) 0%, transparent 60%);
+    background: radial-gradient(ellipse at 50% 38%, #0a2318 0%, #061410 45%, #050d0a 100%);
     background-attachment: fixed;
   }
 
