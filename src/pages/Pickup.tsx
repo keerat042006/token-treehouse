@@ -208,6 +208,17 @@ const Pickup = () => {
             </div>
           </div>
         </div>
+
+        <ServerActionOverlay
+          open={serverState !== 'idle'}
+          state={serverState}
+          loadingText="Scheduling pickup..."
+          successTitle="Pickup scheduled!"
+          successText="Agent will be assigned shortly."
+          errorText={errMsg}
+          onClose={() => setServerState('idle')}
+          onRetry={handleSubmit}
+        />
       </PageWrapper>
     </AppShell>
   );
