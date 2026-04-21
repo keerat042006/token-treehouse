@@ -15,8 +15,6 @@ import Leaderboard from "./pages/Leaderboard";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
 import Arcade from "./pages/Arcade";
-import Wallet from "./pages/Wallet";
-import EcoMap from "./pages/EcoMap";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
