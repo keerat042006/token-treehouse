@@ -9,6 +9,9 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Truck, MapPin, Clock, Package, ChevronRight, PartyPopper } from 'lucide-react';
 import type { PickupRequest } from '@/lib/store';
+import { mockApi } from '@/lib/mockApi';
+import { usePending } from '@/lib/PendingActions';
+import { ServerActionOverlay, useAutoClose } from '@/components/ServerActionOverlay';
 
 const timeSlots = ['09:00 - 11:00', '11:00 - 13:00', '14:00 - 16:00', '16:00 - 18:00'];
 const wasteOptions = ['Plastic', 'Paper', 'Metal', 'E-Waste', 'Glass', 'Organic'];
@@ -23,23 +26,37 @@ const statusLabels: Record<string, string> = {
 
 const Pickup = () => {
   const user = useUser();
+  const { add, resolve } = usePending();
   const [view, setView] = useState<'form' | 'tracking'>('form');
   const [address, setAddress] = useState('');
   const [wasteType, setWasteType] = useState('');
   const [weight, setWeight] = useState('');
   const [timeSlot, setTimeSlot] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [serverState, setServerState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errMsg, setErrMsg] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!address || !wasteType || !weight || !timeSlot) return;
-    user.requestPickup(address, wasteType, parseFloat(weight), timeSlot);
-    setSubmitted(true);
-    fireTokenRain();
-    setTimeout(() => {
-      setSubmitted(false);
-      setView('tracking');
-      setAddress(''); setWasteType(''); setWeight(''); setTimeSlot('');
-    }, 2500);
+    setServerState('loading');
+    const pid = add({ kind: 'pickup', label: `${wasteType} pickup @ ${address.slice(0, 24)}`, amount: 0 });
+    const res = await mockApi.pickup.schedule({ address, wasteType, weight: parseFloat(weight), timeSlot });
+    if (res.ok) {
+      user.requestPickup(address, wasteType, parseFloat(weight), timeSlot);
+      resolve(pid, 'confirmed');
+      setServerState('idle');
+      setSubmitted(true);
+      fireTokenRain();
+      setTimeout(() => {
+        setSubmitted(false);
+        setView('tracking');
+        setAddress(''); setWasteType(''); setWeight(''); setTimeSlot('');
+      }, 2500);
+    } else {
+      resolve(pid, 'failed');
+      setErrMsg(res.error || 'Pickup scheduling failed');
+      setServerState('error');
+    }
   };
 
   const advanceStatus = (id: string, currentStatus: PickupRequest['status']) => {
@@ -191,6 +208,17 @@ const Pickup = () => {
             </div>
           </div>
         </div>
+
+        <ServerActionOverlay
+          open={serverState !== 'idle'}
+          state={serverState}
+          loadingText="Scheduling pickup..."
+          successTitle="Pickup scheduled!"
+          successText="Agent will be assigned shortly."
+          errorText={errMsg}
+          onClose={() => setServerState('idle')}
+          onRetry={handleSubmit}
+        />
       </PageWrapper>
     </AppShell>
   );

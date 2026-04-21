@@ -8,7 +8,11 @@ import { CelebrationModal } from '@/components/CelebrationModal';
 import { fireConfetti } from '@/components/Confetti';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { TrendingUp, ArrowLeft, Coins } from 'lucide-react';
+import { TrendingUp, ArrowLeft, Coins, Camera } from 'lucide-react';
+import { ARScanner } from '@/components/ARScanner';
+import { mockApi } from '@/lib/mockApi';
+import { usePending } from '@/lib/PendingActions';
+import { ServerActionOverlay, useAutoClose } from '@/components/ServerActionOverlay';
 
 const wasteTypes = [
   { name: 'Plastic', emoji: '🧴' },
@@ -21,26 +25,48 @@ const wasteTypes = [
 
 const SellWaste = () => {
   const user = useUser();
+  const { add, resolve } = usePending();
   const [selected, setSelected] = useState('');
   const [weight, setWeight] = useState('');
   const [step, setStep] = useState<'select' | 'weight'>('select');
   const [showCelebration, setShowCelebration] = useState(false);
   const [earnedTokens, setEarnedTokens] = useState(0);
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [serverState, setServerState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errMsg, setErrMsg] = useState('');
   const rates = getAllRates();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const w = parseFloat(weight);
     if (!selected || !w || w <= 0) return;
-    const earned = user.submitWaste(selected, w);
-    setEarnedTokens(earned);
-    setShowCelebration(true);
-    fireConfetti();
+    setServerState('loading');
+    const pid = add({ kind: 'waste', label: `${selected} · ${w} kg`, amount: Math.round(w * getMarketRate(selected)) });
+    const res = await mockApi.waste.submit({ type: selected, weight: w, method: 'cafe-drop' });
+    if (res.ok) {
+      const earned = user.submitWaste(selected, w);
+      resolve(pid, 'confirmed');
+      setEarnedTokens(earned);
+      setServerState('idle');
+      setShowCelebration(true);
+      fireConfetti();
+    } else {
+      resolve(pid, 'failed');
+      setErrMsg(res.error || 'Submission failed');
+      setServerState('error');
+    }
   };
 
   const reset = () => {
     setSelected(''); setWeight(''); setStep('select');
     setEarnedTokens(0); setShowCelebration(false);
   };
+
+  const onScannerResult = ({ category, weightKg }: { category: string; weightKg: number }) => {
+    setSelected(category);
+    setWeight(String(weightKg));
+    setStep('weight');
+  };
+
 
   return (
     <AppShell>
@@ -53,10 +79,15 @@ const SellWaste = () => {
           subtitle={`${weight} kg of ${selected} successfully verified`}
         />
 
-        <div className="mb-6">
-          <p className="section-label">Earn TCC</p>
-          <h1 className="text-3xl lg:text-4xl font-extrabold text-white mt-1">Sell Waste ♻️</h1>
-          <p className="text-muted-foreground-2 text-sm mt-1">Drop waste at any partner café to earn tokens instantly</p>
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="section-label">Earn TCC</p>
+            <h1 className="text-3xl lg:text-4xl font-extrabold text-white mt-1">Sell Waste ♻️</h1>
+            <p className="text-muted-foreground-2 text-sm mt-1">Drop waste at any partner café to earn tokens instantly</p>
+          </div>
+          <Button onClick={() => setScannerOpen(true)} className="btn-eco font-bold h-11 px-5 rounded-xl">
+            <Camera className="w-4 h-4 mr-2" /> Scan Waste with Camera
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -179,6 +210,18 @@ const SellWaste = () => {
             </div>
           </div>
         </div>
+
+        <ARScanner open={scannerOpen} onClose={() => setScannerOpen(false)} onResult={onScannerResult} />
+        <ServerActionOverlay
+          open={serverState !== 'idle'}
+          state={serverState}
+          loadingText="Submitting to server..."
+          successTitle="Submission received!"
+          successText="Our team will verify and credit TCC within 2 hours."
+          errorText={errMsg}
+          onClose={() => setServerState('idle')}
+          onRetry={handleSubmit}
+        />
       </PageWrapper>
     </AppShell>
   );

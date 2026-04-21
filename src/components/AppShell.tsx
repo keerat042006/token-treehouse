@@ -3,7 +3,7 @@ import { ReactNode, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard, ShoppingBag, Clock3, Trophy, Info, Recycle, Truck,
-  Menu, X, Coins, LogOut, Gamepad2,
+  Menu, X, Coins, LogOut, Gamepad2, Wallet as WalletIcon, Map as MapIcon,
 } from 'lucide-react';
 import { useUser } from '@/lib/UserContext';
 import { LevelBadge } from '@/components/LevelBadge';
@@ -18,7 +18,9 @@ const nav = [
   { to: '/pickup', label: 'Pickup', icon: Truck },
   { to: '/arcade', label: 'Arcade', icon: Gamepad2 },
   { to: '/history', label: 'History', icon: Clock3 },
+  { to: '/wallet', label: 'Wallet', icon: WalletIcon },
   { to: '/leaderboard', label: 'Leaderboard', icon: Trophy },
+  { to: '/map', label: 'Eco Map', icon: MapIcon },
   { to: '/about', label: 'About', icon: Info },
 ];
 
