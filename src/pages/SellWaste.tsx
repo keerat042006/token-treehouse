@@ -79,10 +79,15 @@ const SellWaste = () => {
           subtitle={`${weight} kg of ${selected} successfully verified`}
         />
 
-        <div className="mb-6">
-          <p className="section-label">Earn TCC</p>
-          <h1 className="text-3xl lg:text-4xl font-extrabold text-white mt-1">Sell Waste ♻️</h1>
-          <p className="text-muted-foreground-2 text-sm mt-1">Drop waste at any partner café to earn tokens instantly</p>
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="section-label">Earn TCC</p>
+            <h1 className="text-3xl lg:text-4xl font-extrabold text-white mt-1">Sell Waste ♻️</h1>
+            <p className="text-muted-foreground-2 text-sm mt-1">Drop waste at any partner café to earn tokens instantly</p>
+          </div>
+          <Button onClick={() => setScannerOpen(true)} className="btn-eco font-bold h-11 px-5 rounded-xl">
+            <Camera className="w-4 h-4 mr-2" /> Scan Waste with Camera
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
