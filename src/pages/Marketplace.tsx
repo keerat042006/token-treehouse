@@ -49,9 +49,13 @@ const categories = [
 
 const Marketplace = () => {
   const user = useUser();
+  const { add, resolve } = usePending();
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [redeemed, setRedeemed] = useState<string | null>(null);
+  const [serverState, setServerState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [pendingItem, setPendingItem] = useState<Item | null>(null);
+  const [errMsg, setErrMsg] = useState('');
 
   const filtered = items.filter(i => {
     if (filter !== 'all' && i.category !== filter) return false;
@@ -59,17 +63,31 @@ const Marketplace = () => {
     return true;
   });
 
-  const handleRedeem = (item: Item) => {
-    const success = user.spendTokens(item.cost, item.name, item.category);
-    if (success) {
+  const handleRedeem = async (item: Item) => {
+    if (user.tokens < item.cost) {
+      toast.error('Not enough tokens', { description: `You need ${item.cost - user.tokens} more TCC` });
+      return;
+    }
+    setPendingItem(item);
+    setServerState('loading');
+    const pid = add({ kind: 'marketplace', label: `Redeem ${item.name}`, amount: item.cost });
+    const res = await mockApi.marketplace.redeem(item.id, item.name, item.cost);
+    if (res.ok) {
+      user.spendTokens(item.cost, item.name, item.category);
+      resolve(pid, 'confirmed');
       setRedeemed(item.id);
       fireConfetti();
-      toast.success(`Redeemed ${item.name}!`, { description: `-${item.cost} TCC from your wallet` });
+      setServerState('success');
       setTimeout(() => setRedeemed(null), 1800);
     } else {
-      toast.error('Not enough tokens', { description: `You need ${item.cost - user.tokens} more TCC` });
+      resolve(pid, 'failed');
+      setErrMsg(res.error || 'Redemption failed');
+      setServerState('error');
     }
   };
+
+  useAutoClose(serverState, () => setServerState('idle'), 3500);
+
 
   return (
     <AppShell>
