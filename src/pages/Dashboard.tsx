@@ -72,18 +72,18 @@ const DashboardContent = () => {
         {/* Greeting */}
         <motion.div variants={fadeItem} className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="section-label mb-1.5">Welcome back</p>
-            <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
+            <p className="section-label mb-1">Welcome back</p>
+            <h1 className="text-2xl lg:text-3xl font-extrabold text-foreground tracking-tight">
               Hey, {user.name.split(' ')[0]} <span className="inline-block">👋</span>
             </h1>
-            <p className="text-muted-foreground-2 text-sm mt-1">Here's your sustainability snapshot for this week.</p>
+            <p className="text-muted-foreground text-sm mt-1">Here's your sustainability snapshot for this week.</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button onClick={() => navigate('/sell')} className="btn-eco h-10 font-semibold">
-              <Recycle className="w-4 h-4 mr-2" /> Sell Waste
+            <Button onClick={() => navigate('/sell')} className="btn-eco h-9 text-sm font-semibold">
+              <Recycle className="w-3.5 h-3.5 mr-1.5" /> Sell Waste
             </Button>
-            <Button onClick={() => navigate('/marketplace')} variant="outline" className="h-10 border-border bg-surface-card hover:bg-surface-raised">
-              <Gift className="w-4 h-4 mr-2" /> Redeem
+            <Button onClick={() => navigate('/marketplace')} variant="outline" className="h-9 text-sm border-border bg-card hover:bg-secondary">
+              <Gift className="w-3.5 h-3.5 mr-1.5" /> Redeem
             </Button>
           </div>
         </motion.div>
@@ -98,20 +98,20 @@ const DashboardContent = () => {
             <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
                 <p className="section-label">TrashCash Tokens</p>
-                <div className="flex items-baseline gap-2 mt-2">
+                <div className="flex items-baseline gap-2 mt-1.5">
                   <span
                     className="font-extrabold leading-none text-eco-blue"
                     style={{
-                      fontSize: 'clamp(48px, 7vw, 72px)',
-                      textShadow: '0 0 32px hsl(var(--eco-blue) / 0.45)',
+                      fontSize: 'clamp(38px, 5.5vw, 56px)',
+                      textShadow: '0 0 18px hsl(var(--eco-blue) / 0.25)',
                       fontFamily: 'DM Sans, Inter, sans-serif',
                     }}
                   >
                     <CountUp end={user.tokens} />
                   </span>
-                  <span className="text-2xl font-bold text-eco-blue/70">TCC</span>
+                  <span className="text-xl font-bold text-eco-blue/70">TCC</span>
                   <span className="coin-spin ml-1 inline-flex">
-                    <Coins className="w-7 h-7 text-eco-amber" />
+                    <Coins className="w-5 h-5 text-eco-amber" />
                   </span>
                 </div>
                 <p className="text-eco-amber font-semibold mt-2 flex items-center gap-1">
@@ -365,7 +365,7 @@ const ImpactCard = ({
         </div>
         <ArrowUpRight className="w-3.5 h-3.5 text-eco-green" />
       </div>
-      <p className="font-extrabold leading-none" style={{ fontSize: '32px', color, textShadow: `0 0 24px ${color.replace(')', ' / 0.4)')}` }}>
+      <p className="font-extrabold leading-none" style={{ fontSize: '26px', color, textShadow: `0 0 14px ${color.replace(')', ' / 0.25)')}` }}>
         {prefix}<CountUp end={value} decimals={decimals} />{suffix}
       </p>
       <p className="text-xs text-muted-foreground-2 mt-2">{label}</p>
