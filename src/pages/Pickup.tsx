@@ -9,6 +9,9 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Truck, MapPin, Clock, Package, ChevronRight, PartyPopper } from 'lucide-react';
 import type { PickupRequest } from '@/lib/store';
+import { mockApi } from '@/lib/mockApi';
+import { usePending } from '@/lib/PendingActions';
+import { ServerActionOverlay, useAutoClose } from '@/components/ServerActionOverlay';
 
 const timeSlots = ['09:00 - 11:00', '11:00 - 13:00', '14:00 - 16:00', '16:00 - 18:00'];
 const wasteOptions = ['Plastic', 'Paper', 'Metal', 'E-Waste', 'Glass', 'Organic'];

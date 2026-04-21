@@ -210,6 +210,18 @@ const SellWaste = () => {
             </div>
           </div>
         </div>
+
+        <ARScanner open={scannerOpen} onClose={() => setScannerOpen(false)} onResult={onScannerResult} />
+        <ServerActionOverlay
+          open={serverState !== 'idle'}
+          state={serverState}
+          loadingText="Submitting to server..."
+          successTitle="Submission received!"
+          successText="Our team will verify and credit TCC within 2 hours."
+          errorText={errMsg}
+          onClose={() => setServerState('idle')}
+          onRetry={handleSubmit}
+        />
       </PageWrapper>
     </AppShell>
   );
