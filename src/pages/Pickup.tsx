@@ -26,23 +26,37 @@ const statusLabels: Record<string, string> = {
 
 const Pickup = () => {
   const user = useUser();
+  const { add, resolve } = usePending();
   const [view, setView] = useState<'form' | 'tracking'>('form');
   const [address, setAddress] = useState('');
   const [wasteType, setWasteType] = useState('');
   const [weight, setWeight] = useState('');
   const [timeSlot, setTimeSlot] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [serverState, setServerState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errMsg, setErrMsg] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!address || !wasteType || !weight || !timeSlot) return;
-    user.requestPickup(address, wasteType, parseFloat(weight), timeSlot);
-    setSubmitted(true);
-    fireTokenRain();
-    setTimeout(() => {
-      setSubmitted(false);
-      setView('tracking');
-      setAddress(''); setWasteType(''); setWeight(''); setTimeSlot('');
-    }, 2500);
+    setServerState('loading');
+    const pid = add({ kind: 'pickup', label: `${wasteType} pickup @ ${address.slice(0, 24)}`, amount: 0 });
+    const res = await mockApi.pickup.schedule({ address, wasteType, weight: parseFloat(weight), timeSlot });
+    if (res.ok) {
+      user.requestPickup(address, wasteType, parseFloat(weight), timeSlot);
+      resolve(pid, 'confirmed');
+      setServerState('idle');
+      setSubmitted(true);
+      fireTokenRain();
+      setTimeout(() => {
+        setSubmitted(false);
+        setView('tracking');
+        setAddress(''); setWasteType(''); setWeight(''); setTimeSlot('');
+      }, 2500);
+    } else {
+      resolve(pid, 'failed');
+      setErrMsg(res.error || 'Pickup scheduling failed');
+      setServerState('error');
+    }
   };
 
   const advanceStatus = (id: string, currentStatus: PickupRequest['status']) => {
