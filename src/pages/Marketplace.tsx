@@ -202,6 +202,17 @@ const Marketplace = () => {
             <p>No rewards match your filters.</p>
           </div>
         )}
+
+        <ServerActionOverlay
+          open={serverState !== 'idle'}
+          state={serverState}
+          loadingText="Processing redemption..."
+          successTitle="Redemption request sent!"
+          successText={pendingItem ? `${pendingItem.name} will be dispatched within 24 hours.` : 'Item will be dispatched within 24 hours.'}
+          errorText={errMsg}
+          onClose={() => setServerState('idle')}
+          onRetry={() => pendingItem && handleRedeem(pendingItem)}
+        />
       </PageWrapper>
     </AppShell>
   );
