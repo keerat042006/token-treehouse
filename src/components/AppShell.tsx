@@ -23,19 +23,19 @@ const nav = [
 ];
 
 const Logo = () => (
-  <Link to="/" className="flex items-center gap-2.5 group">
+  <Link to="/" className="flex items-center gap-2 group">
     <div
-      className="w-9 h-9 rounded-xl flex items-center justify-center"
+      className="w-8 h-8 rounded-lg flex items-center justify-center"
       style={{
-        background: 'linear-gradient(135deg, hsl(var(--eco-blue)), hsl(220 90% 55%))',
-        boxShadow: '0 6px 18px -6px hsl(var(--eco-blue) / 0.6)',
+        background: 'linear-gradient(135deg, hsl(var(--eco-blue)), hsl(220 90% 50%))',
+        boxShadow: '0 4px 14px -5px hsl(var(--eco-blue) / 0.55)',
       }}
     >
-      <Recycle className="w-5 h-5 text-white" strokeWidth={2.5} />
+      <Recycle className="w-4 h-4 text-white" strokeWidth={2.5} />
     </div>
     <div className="flex flex-col leading-none">
-      <span className="font-extrabold text-white text-lg tracking-tight">EcoFusion</span>
-      <span className="text-[9px] font-semibold text-eco-amber tracking-[0.18em] uppercase">Recycle • Earn</span>
+      <span className="font-extrabold text-foreground text-base tracking-tight">EcoFusion</span>
+      <span className="text-[8px] font-semibold text-eco-amber tracking-[0.18em] uppercase">Recycle • Earn</span>
     </div>
   </Link>
 );
@@ -70,27 +70,28 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
   const [supportOpen, setSupportOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[hsl(var(--surface-base))]">
       <SupportDrawer open={supportOpen} onClose={() => setSupportOpen(false)} userName={user.name || 'Friend'} />
       {/* Top Nav */}
       <header
-        className="sticky top-0 z-40 backdrop-blur-xl"
+        className="sticky top-0 z-40"
         style={{
-          background: 'hsl(var(--surface-nav) / 0.85)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          background: 'hsl(var(--surface-nav))',
+          borderBottom: '1px solid hsl(var(--border))',
+          boxShadow: '0 1px 2px rgba(15, 23, 42, 0.04)',
         }}
       >
-        <div className="flex items-center justify-between px-4 lg:px-6 h-16 max-w-[1600px] mx-auto">
-          <div className="flex items-center gap-6">
+        <div className="flex items-center justify-between px-4 lg:px-6 h-14 max-w-[1600px] mx-auto">
+          <div className="flex items-center gap-5">
             <button
-              className="lg:hidden p-2 -ml-2 text-muted-foreground-2 hover:text-white"
+              className="lg:hidden p-2 -ml-2 text-muted-foreground hover:text-foreground"
               onClick={() => setMobileOpen(true)}
             >
               <Menu className="w-5 h-5" />
             </button>
             <Logo />
             {/* Desktop top nav links */}
-            <nav className="hidden lg:flex items-center gap-1 ml-4">
+            <nav className="hidden lg:flex items-center gap-0.5 ml-3">
               {nav.slice(0, 5).map(({ to, label }) => {
                 const active = pathname === to;
                 return (
@@ -105,32 +106,34 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
           <div className="flex items-center gap-2 sm:gap-3">
             {user.isLoggedIn && (
               <>
+                {/* Greeting — visible on desktop, aligned right */}
+                <span className="hidden md:inline text-sm font-semibold text-foreground">
+                  Hey, {user.name.split(' ')[0] || 'Friend'} 👋
+                </span>
+
                 <NotificationBell />
 
-                <span className="token-pill hidden sm:inline-flex">
-                  <span className="coin-spin inline-flex"><Coins className="w-3.5 h-3.5" /></span>
+                <span className="token-pill">
+                  <span className="coin-spin inline-flex"><Coins className="w-3 h-3" /></span>
                   {user.tokens} TCC
                 </span>
 
-                <div className="hidden md:flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl surface-raised">
+                <div className="hidden md:flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-lg surface-raised">
                   <div
-                    className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
-                    style={{ background: 'linear-gradient(135deg, hsl(var(--eco-blue)), hsl(220 80% 50%))' }}
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+                    style={{ background: 'linear-gradient(135deg, hsl(var(--eco-blue)), hsl(220 80% 45%))' }}
                   >
                     {user.name.charAt(0) || 'A'}
                   </div>
-                  <div className="flex flex-col leading-tight">
-                    <span className="text-xs font-semibold text-white">{user.name.split(' ')[0] || 'Guest'}</span>
-                    <LevelBadge level={user.level} size="sm" />
-                  </div>
+                  <LevelBadge level={user.level} size="sm" />
                 </div>
 
                 <button
                   onClick={user.logout}
-                  className="hidden md:flex w-9 h-9 rounded-xl items-center justify-center surface-raised hover:text-eco-coral text-muted-foreground-2"
+                  className="hidden md:flex w-8 h-8 rounded-lg items-center justify-center surface-raised hover:text-eco-coral text-muted-foreground"
                   title="Logout"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-3.5 h-3.5" />
                 </button>
               </>
             )}
@@ -141,20 +144,20 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
       <div className="flex flex-1 max-w-[1600px] w-full mx-auto">
         {/* Desktop sidebar */}
         <aside
-          className="hidden lg:flex flex-col w-60 shrink-0 sticky top-16 self-start"
-          style={{ height: 'calc(100vh - 4rem)' }}
+          className="hidden lg:flex flex-col w-52 shrink-0 sticky top-14 self-start border-r border-border bg-[hsl(var(--surface-nav))]"
+          style={{ height: 'calc(100vh - 3.5rem)' }}
         >
           <div className="flex-1 overflow-y-auto">
             {user.isLoggedIn && <XPBar current={user.tokens} target={1000} fromLabel="Silver" toLabel="Gold" />}
-            <p className="section-label px-6 pt-5 pb-2">Menu</p>
+            <p className="section-label px-5 pt-4 pb-1.5">Menu</p>
             <Sidebar />
           </div>
-          <div className="p-4 m-3 rounded-2xl glass-deep">
-            <p className="text-xs font-bold text-white">Need help?</p>
-            <p className="text-[11px] text-muted-foreground-2 mt-0.5">Chat with our eco-team 24/7</p>
+          <div className="p-3.5 m-2.5 rounded-xl border border-border bg-[hsl(var(--surface-raised))]">
+            <p className="text-xs font-bold text-foreground">Need help?</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Chat with our eco-team 24/7</p>
             <button
               onClick={() => setSupportOpen(true)}
-              className="mt-3 text-xs font-semibold text-eco-green hover:underline"
+              className="mt-2 text-xs font-semibold text-eco-blue hover:underline"
             >
               Open support →
             </button>
@@ -164,15 +167,15 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
         {/* Mobile drawer */}
         {mobileOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
-            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+            <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
             <motion.aside
               initial={{ x: -260 }}
               animate={{ x: 0 }}
-              className="absolute left-0 top-0 bottom-0 w-64 bg-surface-nav border-r border-border flex flex-col"
+              className="absolute left-0 top-0 bottom-0 w-60 bg-[hsl(var(--surface-nav))] border-r border-border flex flex-col"
             >
-              <div className="flex items-center justify-between p-4 border-b border-border">
+              <div className="flex items-center justify-between p-3.5 border-b border-border">
                 <Logo />
-                <button onClick={() => setMobileOpen(false)} className="text-muted-foreground-2 p-1">
+                <button onClick={() => setMobileOpen(false)} className="text-muted-foreground p-1">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -182,7 +185,7 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
         )}
 
         {/* Main */}
-        <main className="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        <main className="flex-1 min-w-0 px-4 sm:px-5 lg:px-6 py-5 lg:py-6 light-text-fix">
           {children}
         </main>
       </div>

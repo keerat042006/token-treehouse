@@ -72,18 +72,18 @@ const DashboardContent = () => {
         {/* Greeting */}
         <motion.div variants={fadeItem} className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="section-label mb-1.5">Welcome back</p>
-            <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
+            <p className="section-label mb-1">Welcome back</p>
+            <h1 className="text-2xl lg:text-3xl font-extrabold text-foreground tracking-tight">
               Hey, {user.name.split(' ')[0]} <span className="inline-block">👋</span>
             </h1>
-            <p className="text-muted-foreground-2 text-sm mt-1">Here's your sustainability snapshot for this week.</p>
+            <p className="text-muted-foreground text-sm mt-1">Here's your sustainability snapshot for this week.</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button onClick={() => navigate('/sell')} className="btn-eco h-10 font-semibold">
-              <Recycle className="w-4 h-4 mr-2" /> Sell Waste
+            <Button onClick={() => navigate('/sell')} className="btn-eco h-9 text-sm font-semibold">
+              <Recycle className="w-3.5 h-3.5 mr-1.5" /> Sell Waste
             </Button>
-            <Button onClick={() => navigate('/marketplace')} variant="outline" className="h-10 border-border bg-surface-card hover:bg-surface-raised">
-              <Gift className="w-4 h-4 mr-2" /> Redeem
+            <Button onClick={() => navigate('/marketplace')} variant="outline" className="h-9 text-sm border-border bg-card hover:bg-secondary">
+              <Gift className="w-3.5 h-3.5 mr-1.5" /> Redeem
             </Button>
           </div>
         </motion.div>
@@ -98,20 +98,20 @@ const DashboardContent = () => {
             <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
                 <p className="section-label">TrashCash Tokens</p>
-                <div className="flex items-baseline gap-2 mt-2">
+                <div className="flex items-baseline gap-2 mt-1.5">
                   <span
                     className="font-extrabold leading-none text-eco-blue"
                     style={{
-                      fontSize: 'clamp(48px, 7vw, 72px)',
-                      textShadow: '0 0 32px hsl(var(--eco-blue) / 0.45)',
+                      fontSize: 'clamp(38px, 5.5vw, 56px)',
+                      textShadow: '0 0 18px hsl(var(--eco-blue) / 0.25)',
                       fontFamily: 'DM Sans, Inter, sans-serif',
                     }}
                   >
                     <CountUp end={user.tokens} />
                   </span>
-                  <span className="text-2xl font-bold text-eco-blue/70">TCC</span>
+                  <span className="text-xl font-bold text-eco-blue/70">TCC</span>
                   <span className="coin-spin ml-1 inline-flex">
-                    <Coins className="w-7 h-7 text-eco-amber" />
+                    <Coins className="w-5 h-5 text-eco-amber" />
                   </span>
                 </div>
                 <p className="text-eco-amber font-semibold mt-2 flex items-center gap-1">
@@ -365,7 +365,7 @@ const ImpactCard = ({
         </div>
         <ArrowUpRight className="w-3.5 h-3.5 text-eco-green" />
       </div>
-      <p className="font-extrabold leading-none" style={{ fontSize: '32px', color, textShadow: `0 0 24px ${color.replace(')', ' / 0.4)')}` }}>
+      <p className="font-extrabold leading-none" style={{ fontSize: '26px', color, textShadow: `0 0 14px ${color.replace(')', ' / 0.25)')}` }}>
         {prefix}<CountUp end={value} decimals={decimals} />{suffix}
       </p>
       <p className="text-xs text-muted-foreground-2 mt-2">{label}</p>
@@ -416,66 +416,63 @@ const LoginScreen = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="px-6 h-16 flex items-center border-b border-border bg-surface-nav/80 backdrop-blur-xl">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center btn-eco">
-            <Recycle className="w-5 h-5 text-white" strokeWidth={2.5} />
+    <div className="min-h-screen flex flex-col bg-[hsl(var(--surface-base))]">
+      <header className="px-6 h-14 flex items-center border-b border-border bg-[hsl(var(--surface-nav))]">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center btn-eco">
+            <Recycle className="w-4 h-4 text-white" strokeWidth={2.5} />
           </div>
-          <span className="font-extrabold text-white text-lg">EcoFusion</span>
+          <span className="font-extrabold text-foreground text-base">EcoFusion</span>
         </div>
       </header>
       <main className="flex-1 grid lg:grid-cols-2 items-center gap-8 max-w-[1200px] mx-auto w-full px-6 py-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <span className="pill-outline mb-5"><Sparkles className="w-3 h-3 text-eco-blue" /> The fintech of recycling</span>
-          <h1 className="text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.05]">
+          <h1 className="text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight leading-[1.05]">
             Turn your <span className="text-eco-blue">waste</span> into a real <span className="text-eco-amber">wallet</span>.
           </h1>
-          <p className="text-muted-foreground-2 text-lg mt-5 leading-relaxed">
+          <p className="text-muted-foreground text-base mt-5 leading-relaxed">
             EcoFusion is a modern circular economy platform. Recycle, earn TrashCash (TCC) tokens at live market rates, and redeem at 200+ partners.
           </p>
-          <div className="flex items-center gap-6 mt-8 text-xs text-muted-foreground-2">
-            <div><span className="text-white font-bold">12K+</span> recyclers</div>
-            <div><span className="text-white font-bold">₹4.2M</span> tokens issued</div>
-            <div><span className="text-white font-bold">340 t</span> CO₂ saved</div>
+          <div className="flex items-center gap-6 mt-7 text-xs text-muted-foreground">
+            <div><span className="text-foreground font-bold">12K+</span> recyclers</div>
+            <div><span className="text-foreground font-bold">₹4.2M</span> tokens issued</div>
+            <div><span className="text-foreground font-bold">340 t</span> CO₂ saved</div>
           </div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="relative rounded-3xl p-7 lg:p-8 overflow-hidden"
+          className="relative rounded-2xl p-6 lg:p-7 overflow-hidden bg-card border border-border"
           style={{
-            background: 'linear-gradient(160deg, hsl(var(--surface-card) / 0.85), hsl(var(--surface-base) / 0.85))',
-            border: '1px solid hsl(var(--eco-blue) / 0.35)',
-            boxShadow: '0 20px 60px -20px hsl(var(--eco-blue) / 0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
-            backdropFilter: 'blur(20px)',
+            boxShadow: '0 20px 60px -25px hsl(var(--eco-blue) / 0.35), 0 4px 12px rgba(15, 23, 42, 0.06)',
           }}
         >
-          <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--eco-blue) / 0.25), transparent 70%)' }} />
+          <div className="absolute -top-24 -right-24 w-56 h-56 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--eco-blue) / 0.15), transparent 70%)' }} />
           <div className="relative">
-            <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center btn-eco">
-                <Recycle className="w-5 h-5 text-white" strokeWidth={2.5} />
+            <div className="flex items-center gap-2 mb-5">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center btn-eco">
+                <Recycle className="w-4 h-4 text-white" strokeWidth={2.5} />
               </div>
               <div>
-                <p className="font-extrabold text-white text-lg leading-none">EcoFusion</p>
-                <p className="text-[10px] font-semibold text-eco-amber tracking-[0.18em] uppercase mt-1">Recycle • Earn</p>
+                <p className="font-extrabold text-foreground text-base leading-none">EcoFusion</p>
+                <p className="text-[9px] font-semibold text-eco-amber tracking-[0.18em] uppercase mt-1">Recycle • Earn</p>
               </div>
             </div>
 
-            <div className="flex p-1 rounded-xl bg-surface-raised border border-border mb-5">
+            <div className="flex p-1 rounded-lg bg-secondary border border-border mb-5">
               <button
                 type="button"
                 onClick={() => setMode('login')}
-                className={`flex-1 py-2 rounded-lg text-sm font-bold transition ${mode === 'login' ? 'bg-eco-blue text-white shadow-lg' : 'text-muted-foreground-2 hover:text-white'}`}
+                className={`flex-1 py-1.5 rounded-md text-sm font-bold transition ${mode === 'login' ? 'bg-eco-blue text-white shadow' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <LogIn className="w-3.5 h-3.5 inline mr-1.5" /> Login
               </button>
               <button
                 type="button"
                 onClick={() => setMode('register')}
-                className={`flex-1 py-2 rounded-lg text-sm font-bold transition ${mode === 'register' ? 'bg-eco-blue text-white shadow-lg' : 'text-muted-foreground-2 hover:text-white'}`}
+                className={`flex-1 py-1.5 rounded-md text-sm font-bold transition ${mode === 'register' ? 'bg-eco-blue text-white shadow' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <UserPlus className="w-3.5 h-3.5 inline mr-1.5" /> Register
               </button>
@@ -487,7 +484,7 @@ const LoginScreen = () => {
                   <Label className="text-xs text-muted-foreground-2 font-semibold">Name</Label>
                   <div className="relative">
                     <UserIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                    <Input value={name} onChange={e => setName(e.target.value)} placeholder="Arjun Sharma" className="pl-9 bg-surface-raised border-border text-white" />
+                    <Input value={name} onChange={e => setName(e.target.value)} placeholder="Arjun Sharma" className="pl-9 bg-secondary border-border text-foreground" />
                   </div>
                 </div>
               )}
@@ -495,14 +492,14 @@ const LoginScreen = () => {
                 <Label className="text-xs text-muted-foreground-2 font-semibold">Email</Label>
                 <div className="relative">
                   <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                  <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@ecofusion.in" className="pl-9 bg-surface-raised border-border text-white" />
+                  <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@ecofusion.in" className="pl-9 bg-secondary border-border text-foreground" />
                 </div>
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs text-muted-foreground-2 font-semibold">Password</Label>
                 <div className="relative">
                   <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                  <Input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className="pl-9 bg-surface-raised border-border text-white" />
+                  <Input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className="pl-9 bg-secondary border-border text-foreground" />
                 </div>
               </div>
               {mode === 'register' && (
@@ -510,7 +507,7 @@ const LoginScreen = () => {
                   <Label className="text-xs text-muted-foreground-2 font-semibold">Confirm Password</Label>
                   <div className="relative">
                     <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                    <Input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="••••••••" className="pl-9 bg-surface-raised border-border text-white" />
+                    <Input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="••••••••" className="pl-9 bg-secondary border-border text-foreground" />
                   </div>
                 </div>
               )}
@@ -529,7 +526,7 @@ const LoginScreen = () => {
               type="button"
               variant="outline"
               onClick={() => user.loginDemo()}
-              className="w-full h-11 border-border bg-surface-raised hover:bg-surface-card text-white font-semibold"
+              className="w-full h-10 border-border bg-secondary hover:bg-muted text-foreground font-semibold"
             >
               Continue as Guest →
             </Button>

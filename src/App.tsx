@@ -47,7 +47,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <EcoBackground />
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#f4f7f6' }}>
           <BrowserRouter>
             <AnimatedRoutes />
           </BrowserRouter>
