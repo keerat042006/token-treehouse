@@ -67,8 +67,8 @@ export const PageTransitionWrapper = ({ children }: { children: ReactNode }) => 
           animate="center"
           exit="exit"
           transition={{
-            enter: { duration: 0.38, ease: [0.0, 0.0, 0.2, 1.0] },
-            exit: { duration: 0.32, ease: [0.4, 0.0, 1.0, 1.0] },
+            duration: 0.35,
+            ease: [0.0, 0.0, 0.2, 1.0],
             x: { type: 'tween' },
             opacity: { duration: 0.3 },
             filter: { duration: 0.3 },
