@@ -484,7 +484,7 @@ const LoginScreen = () => {
                   <Label className="text-xs text-muted-foreground-2 font-semibold">Name</Label>
                   <div className="relative">
                     <UserIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                    <Input value={name} onChange={e => setName(e.target.value)} placeholder="Arjun Sharma" className="pl-9 bg-surface-raised border-border text-white" />
+                    <Input value={name} onChange={e => setName(e.target.value)} placeholder="Arjun Sharma" className="pl-9 bg-secondary border-border text-foreground" />
                   </div>
                 </div>
               )}
@@ -492,14 +492,14 @@ const LoginScreen = () => {
                 <Label className="text-xs text-muted-foreground-2 font-semibold">Email</Label>
                 <div className="relative">
                   <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                  <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@ecofusion.in" className="pl-9 bg-surface-raised border-border text-white" />
+                  <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@ecofusion.in" className="pl-9 bg-secondary border-border text-foreground" />
                 </div>
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs text-muted-foreground-2 font-semibold">Password</Label>
                 <div className="relative">
                   <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                  <Input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className="pl-9 bg-surface-raised border-border text-white" />
+                  <Input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className="pl-9 bg-secondary border-border text-foreground" />
                 </div>
               </div>
               {mode === 'register' && (
@@ -507,7 +507,7 @@ const LoginScreen = () => {
                   <Label className="text-xs text-muted-foreground-2 font-semibold">Confirm Password</Label>
                   <div className="relative">
                     <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                    <Input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="••••••••" className="pl-9 bg-surface-raised border-border text-white" />
+                    <Input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="••••••••" className="pl-9 bg-secondary border-border text-foreground" />
                   </div>
                 </div>
               )}
