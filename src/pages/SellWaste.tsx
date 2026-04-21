@@ -8,7 +8,11 @@ import { CelebrationModal } from '@/components/CelebrationModal';
 import { fireConfetti } from '@/components/Confetti';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { TrendingUp, ArrowLeft, Coins } from 'lucide-react';
+import { TrendingUp, ArrowLeft, Coins, Camera } from 'lucide-react';
+import { ARScanner } from '@/components/ARScanner';
+import { mockApi } from '@/lib/mockApi';
+import { usePending } from '@/lib/PendingActions';
+import { ServerActionOverlay, useAutoClose } from '@/components/ServerActionOverlay';
 
 const wasteTypes = [
   { name: 'Plastic', emoji: '🧴' },
@@ -21,26 +25,48 @@ const wasteTypes = [
 
 const SellWaste = () => {
   const user = useUser();
+  const { add, resolve } = usePending();
   const [selected, setSelected] = useState('');
   const [weight, setWeight] = useState('');
   const [step, setStep] = useState<'select' | 'weight'>('select');
   const [showCelebration, setShowCelebration] = useState(false);
   const [earnedTokens, setEarnedTokens] = useState(0);
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [serverState, setServerState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errMsg, setErrMsg] = useState('');
   const rates = getAllRates();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const w = parseFloat(weight);
     if (!selected || !w || w <= 0) return;
-    const earned = user.submitWaste(selected, w);
-    setEarnedTokens(earned);
-    setShowCelebration(true);
-    fireConfetti();
+    setServerState('loading');
+    const pid = add({ kind: 'waste', label: `${selected} · ${w} kg`, amount: Math.round(w * getMarketRate(selected)) });
+    const res = await mockApi.waste.submit({ type: selected, weight: w, method: 'cafe-drop' });
+    if (res.ok) {
+      const earned = user.submitWaste(selected, w);
+      resolve(pid, 'confirmed');
+      setEarnedTokens(earned);
+      setServerState('idle');
+      setShowCelebration(true);
+      fireConfetti();
+    } else {
+      resolve(pid, 'failed');
+      setErrMsg(res.error || 'Submission failed');
+      setServerState('error');
+    }
   };
 
   const reset = () => {
     setSelected(''); setWeight(''); setStep('select');
     setEarnedTokens(0); setShowCelebration(false);
   };
+
+  const onScannerResult = ({ category, weightKg }: { category: string; weightKg: number }) => {
+    setSelected(category);
+    setWeight(String(weightKg));
+    setStep('weight');
+  };
+
 
   return (
     <AppShell>
