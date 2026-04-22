@@ -12,6 +12,7 @@ import type { PickupRequest } from '@/lib/store';
 import { mockApi } from '@/lib/mockApi';
 import { usePending } from '@/lib/PendingActions';
 import { ServerActionOverlay, useAutoClose } from '@/components/ServerActionOverlay';
+import { useParticleBurst } from '@/hooks/useParticleBurst';
 
 const timeSlots = ['09:00 - 11:00', '11:00 - 13:00', '14:00 - 16:00', '16:00 - 18:00'];
 const wasteOptions = ['Plastic', 'Paper', 'Metal', 'E-Waste', 'Glass', 'Organic'];
@@ -27,6 +28,7 @@ const statusLabels: Record<string, string> = {
 const Pickup = () => {
   const user = useUser();
   const { add, resolve } = usePending();
+  const burst = useParticleBurst();
   const [view, setView] = useState<'form' | 'tracking'>('form');
   const [address, setAddress] = useState('');
   const [wasteType, setWasteType] = useState('');
@@ -125,7 +127,7 @@ const Pickup = () => {
                       </Select>
                     </div>
                     <Button
-                      onClick={handleSubmit}
+                      onClick={(e) => { burst(e); handleSubmit(); }}
                       disabled={!address || !wasteType || !weight || !timeSlot}
                       className="w-full btn-eco h-12 text-base font-bold"
                     >

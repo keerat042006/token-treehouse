@@ -7,6 +7,8 @@ import { UserProvider } from "@/lib/UserContext";
 import { PendingProvider } from "@/lib/PendingActions";
 import { EcoBackground } from "@/components/EcoBackground";
 import { RouteTransition } from "@/components/RouteTransition";
+import { WorldNavProvider } from "@/components/WorldNavContext";
+import { WorldNav } from "@/components/WorldNav";
 import Dashboard from "./pages/Dashboard";
 import SellWaste from "./pages/SellWaste";
 import Pickup from "./pages/Pickup";
@@ -52,12 +54,17 @@ const App = () => (
         <PendingProvider>
           <Toaster />
           <Sonner />
+          {/* Fixed 3D background — always behind everything */}
           <EcoBackground />
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <BrowserRouter>
-              <AnimatedRoutes />
-            </BrowserRouter>
-          </div>
+          <BrowserRouter>
+            <WorldNavProvider>
+              {/* 3D floating world overlay */}
+              <WorldNav />
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <AnimatedRoutes />
+              </div>
+            </WorldNavProvider>
+          </BrowserRouter>
         </PendingProvider>
       </UserProvider>
     </TooltipProvider>

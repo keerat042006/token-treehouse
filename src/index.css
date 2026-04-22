@@ -84,6 +84,24 @@
     background:
       radial-gradient(ellipse at 50% 38%, #0a2318 0%, #061410 45%, #050d0a 100%);
     background-attachment: fixed;
+    position: relative;
+  }
+
+  /* CRT scanline overlay — cyberpunk effect */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 3px
+    );
+    opacity: 0.03;
   }
 
 
@@ -98,13 +116,14 @@
   /* === Surface primitives === */
   .surface-card {
     background: hsl(var(--surface-card));
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(0, 229, 160, 0.2);
     border-radius: 16px;
     transition: all 220ms cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 20px rgba(0, 229, 160, 0.05) inset;
   }
   .surface-card:hover {
     border-color: hsl(var(--eco-blue) / 0.35);
-    box-shadow: 0 0 0 1px hsl(var(--eco-blue) / 0.4), 0 18px 40px -16px hsl(var(--eco-blue) / 0.25);
+    box-shadow: 0 0 0 1px hsl(var(--eco-blue) / 0.4), 0 18px 40px -16px hsl(var(--eco-blue) / 0.25), 0 0 20px rgba(0, 229, 160, 0.08) inset;
     transform: translateY(-2px);
   }
 
@@ -120,30 +139,7 @@
     border-radius: 12px;
   }
 
-  /* Glass card with subtle gradient border */
-  .glass-card {
-    background: hsl(var(--surface-card));
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    transition: all 220ms ease;
-  }
-  .glass-card:hover {
-    box-shadow: 0 0 0 2px hsl(var(--eco-blue) / 0.4);
-  }
-
-  .glass-tile {
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    transition: all 220ms ease;
-  }
-  .glass-tile:hover {
-    border-color: hsl(var(--eco-blue) / 0.5);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px -12px hsl(var(--eco-blue) / 0.4);
-  }
+  /* Glass card — cyberpunk green border (defined below in full) */
 
   /* Hero wallet — gradient border */
   .wallet-hero {
@@ -167,16 +163,36 @@
     pointer-events: none;
   }
 
-  /* Token CTA — electric blue gradient button */
+  /* Token CTA — electric blue gradient button with cyberpunk glow */
   .btn-eco {
     background: linear-gradient(135deg, hsl(var(--eco-blue)), hsl(220 90% 55%));
     color: #ffffff;
-    box-shadow: 0 8px 24px -8px hsl(var(--eco-blue) / 0.6);
+    box-shadow: 0 0 15px #00e5a0, 0 0 30px rgba(0, 229, 160, 0.3), 0 8px 24px -8px hsl(var(--eco-blue) / 0.6);
     transition: all 200ms ease;
+    position: relative;
+    overflow: hidden;
   }
   .btn-eco:hover {
-    box-shadow: 0 12px 32px -8px hsl(var(--eco-blue) / 0.8);
+    box-shadow: 0 0 20px #00e5a0, 0 0 40px rgba(0, 229, 160, 0.4), 0 12px 32px -8px hsl(var(--eco-blue) / 0.8);
     transform: translateY(-1px);
+  }
+  /* Scanline overlay on hover */
+  .btn-eco::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(0, 229, 160, 0.05) 1px,
+      transparent 2px
+    );
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+  .btn-eco:hover::before {
+    opacity: 1;
   }
 
   .btn-amber {
@@ -310,19 +326,45 @@
   .bg-surface-raised { background-color: hsl(var(--surface-raised)); }
   .bg-surface-nav { background-color: hsl(var(--surface-nav)); }
 
-  /* Sidebar nav link */
+  /* Sidebar nav link with cyberpunk green glow on hover */
   .nav-item {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all;
     color: hsl(var(--text-muted));
+    position: relative;
   }
   .nav-item:hover {
     background: rgba(255, 255, 255, 0.04);
     color: hsl(var(--text-primary));
+    animation: nav-glitch 0.2s ease 2;
+  }
+  /* Green left border glow on hover */
+  .nav-item:hover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #00e5a0, #00ff88);
+    box-shadow: 0 0 10px #00e5a0, 0 0 20px #00e5a0;
+    border-radius: 0 2px 2px 0;
+    animation: slide-in-left 0.15s ease;
   }
   .nav-item-active {
     background: hsl(var(--eco-blue) / 0.12);
     color: hsl(var(--eco-blue));
     border: 1px solid hsl(var(--eco-blue) / 0.3);
+  }
+
+  @keyframes nav-glitch {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-1px); }
+    75% { transform: translateX(1px); }
+  }
+
+  @keyframes slide-in-left {
+    from { transform: translateX(-8px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
   }
 
   /* Top nav link */
@@ -335,20 +377,47 @@
 
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Glass card with cyberpunk green border */
+  .glass-card {
+    background: hsl(var(--surface-card));
+    border: 1px solid rgba(0, 229, 160, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 229, 160, 0.05) inset;
+    transition: all 220ms ease;
+  }
+  .glass-card:hover {
+    box-shadow: 0 0 0 2px hsl(var(--eco-blue) / 0.4), 0 0 20px rgba(0, 229, 160, 0.08) inset;
+  }
+
+  .glass-tile {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 229, 160, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 229, 160, 0.05) inset;
+    transition: all 220ms ease;
+  }
+  .glass-tile:hover {
+    border-color: hsl(var(--eco-blue) / 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px -12px hsl(var(--eco-blue) / 0.4), 0 0 20px rgba(0, 229, 160, 0.08) inset;
+  }
 }
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
 
-  /* Premium glow text for metric numbers and TCC displays */
+  /* Premium glow text for metric numbers and TCC displays — CYBERPUNK GREEN */
   .text-glow-eco {
-    text-shadow: 0 0 20px rgba(0, 229, 160, 0.6), 0 0 60px rgba(0, 229, 160, 0.2);
+    text-shadow: 0 0 10px #00e5a0, 0 0 20px #00e5a0, 0 0 40px #00ff88;
   }
   .text-glow-amber {
-    text-shadow: 0 0 20px hsl(var(--eco-amber) / 0.6), 0 0 60px hsl(var(--eco-amber) / 0.2);
+    text-shadow: 0 0 10px hsl(var(--eco-amber)), 0 0 20px hsl(var(--eco-amber)), 0 0 40px hsl(var(--eco-amber) / 0.6);
   }
   .text-glow-blue {
-    text-shadow: 0 0 20px hsl(var(--eco-blue) / 0.6), 0 0 60px hsl(var(--eco-blue) / 0.2);
+    text-shadow: 0 0 10px hsl(var(--eco-blue)), 0 0 20px hsl(var(--eco-blue)), 0 0 40px hsl(var(--eco-blue) / 0.6);
   }
 
   /* Glassy card with backdrop blur over 3D background */
@@ -356,12 +425,42 @@
     background: rgba(13, 33, 24, 0.72);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(0, 229, 160, 0.15);
+    border: 1px solid rgba(0, 229, 160, 0.2);
+    box-shadow: 0 0 20px rgba(0, 229, 160, 0.05) inset;
   }
 
   /* Hexagon clip for badges */
   .hexagon {
     clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+  }
+}
+
+/* ============================================================
+   PARTICLE BURST + RIPPLE ANIMATIONS (global, outside layers)
+   ============================================================ */
+@keyframes particle-fly {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--vx)), calc(-50% + var(--vy))) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes ripple-expand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(0, 229, 160, 0.6);
+  }
+  100% {
+    width: 120px;
+    height: 120px;
+    opacity: 0;
+    box-shadow: 0 0 20px 10px rgba(0, 229, 160, 0);
   }
 }
 

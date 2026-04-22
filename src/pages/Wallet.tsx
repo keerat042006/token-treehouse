@@ -10,6 +10,7 @@ import { useUser } from '@/lib/UserContext';
 import { mockApi } from '@/lib/mockApi';
 import { ServerActionOverlay, useAutoClose } from '@/components/ServerActionOverlay';
 import { usePending } from '@/lib/PendingActions';
+import { useParticleBurst } from '@/hooks/useParticleBurst';
 
 const last7Days = () => {
   const labels: string[] = [];
@@ -34,6 +35,7 @@ const txns = [
 
 const Wallet = () => {
   const user = useUser();
+  const burst = useParticleBurst();
   const [cashOpen, setCashOpen] = useState(false);
 
   const labels = last7Days();
@@ -61,7 +63,7 @@ const Wallet = () => {
           <p className="text-eco-green/90 mt-2 flex items-center justify-center gap-1 font-semibold">
             <IndianRupee className="w-4 h-4" />{(user.tokens * 0.5).toFixed(2)} <span className="text-muted-foreground-2 font-normal text-xs ml-1">value</span>
           </p>
-          <Button onClick={() => setCashOpen(true)} className="btn-amber mt-6 h-12 px-8 font-bold rounded-xl">
+          <Button onClick={(e) => { burst(e); setCashOpen(true); }} className="btn-amber mt-6 h-12 px-8 font-bold rounded-xl">
             <ArrowUpFromLine className="w-4 h-4 mr-2" /> Cash Out to UPI
           </Button>
         </div>
@@ -157,6 +159,7 @@ const FlipCoin = ({ balance }: { balance: number }) => (
 
 const CashOutModal = ({ onClose, balance }: { onClose: () => void; balance: number }) => {
   const { add, resolve } = usePending();
+  const burst = useParticleBurst();
   const [upi, setUpi] = useState('');
   const [amount, setAmount] = useState('');
   const [state, setState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -165,7 +168,8 @@ const CashOutModal = ({ onClose, balance }: { onClose: () => void; balance: numb
   const num = parseFloat(amount) || 0;
   const valid = upi.includes('@') && upi.length > 4 && num >= 100 && num <= balance;
 
-  const submit = async () => {
+  const submit = async (e?: React.MouseEvent<HTMLElement>) => {
+    if (e) burst(e);
     if (!valid) return;
     setState('loading');
     const pid = add({ kind: 'cashout', label: `Cashout to ${upi}`, amount: num });
@@ -208,7 +212,7 @@ const CashOutModal = ({ onClose, balance }: { onClose: () => void; balance: numb
             </div>
           </div>
 
-          <Button onClick={submit} disabled={!valid} className="btn-amber w-full mt-5 h-11 font-bold disabled:opacity-50">
+          <Button onClick={(e) => submit(e)} disabled={!valid} className="btn-amber w-full mt-5 h-11 font-bold disabled:opacity-50">
             Submit Cashout
           </Button>
         </motion.div>
@@ -222,7 +226,7 @@ const CashOutModal = ({ onClose, balance }: { onClose: () => void; balance: numb
         successText="UPI transfer will arrive within 4 hours."
         errorText={error}
         onClose={() => { setState('idle'); if (state === 'success') onClose(); }}
-        onRetry={submit}
+        onRetry={() => submit()}
       />
     </>
   );

@@ -11,6 +11,7 @@ import { TiltCard } from '@/components/TiltCard';
 import { CountUp } from '@/components/CountUp';
 import { useUser } from '@/lib/UserContext';
 import { fireEcoConfetti } from '@/components/EcoConfetti';
+import { useParticleBurst } from '@/hooks/useParticleBurst';
 
 interface PhysicalGame {
   id: string;
@@ -66,6 +67,7 @@ const TIME_SLOTS = ['Morning (9–12)', 'Afternoon (12–5)', 'Evening (5–9)']
 const Arcade = () => {
   const user = useUser();
   const { add, resolve } = usePending();
+  const burst = useParticleBurst();
   const [tab, setTab] = useState<'browse' | 'bookings'>('browse');
   const [active, setActive] = useState<PhysicalGame | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -153,14 +155,7 @@ const Arcade = () => {
                       </div>
                     </div>
 
-                    <Button
-                      onClick={() => setActive(g)}
-                      disabled={!canBook}
-                      className="btn-eco w-full mt-4 h-10 font-bold disabled:opacity-50"
-                      style={{ boxShadow: canBook ? '0 0 20px hsl(var(--eco-blue) / 0.5)' : undefined }}
-                    >
-                      {canBook ? <>📅 Book Session</> : `Need ${g.cost - user.tokens} more TCC`}
-                    </Button>
+                    <BookButton game={g} canBook={canBook} userTokens={user.tokens} onBook={(e) => { burst(e); setActive(g); }} />
                   </div>
                 </TiltCard>
               );
@@ -210,6 +205,17 @@ const Arcade = () => {
   );
 };
 
+const BookButton = ({ game, canBook, onBook, userTokens }: { game: PhysicalGame; canBook: boolean; onBook: (e: React.MouseEvent<HTMLButtonElement>) => void; userTokens: number }) => (
+  <Button
+    onClick={onBook}
+    disabled={!canBook}
+    className="btn-eco w-full mt-4 h-10 font-bold disabled:opacity-50"
+    style={{ boxShadow: canBook ? '0 0 20px hsl(var(--eco-blue) / 0.5)' : undefined }}
+  >
+    {canBook ? <>📅 Book Session</> : `Need ${game.cost - userTokens} more TCC`}
+  </Button>
+);
+
 const StatusBadge = ({ status }: { status: Booking['status'] }) => {
   const map: Record<Booking['status'], { bg: string; color: string; label: string }> = {
     Pending: { bg: 'rgba(245,158,11,0.15)', color: '#f59e0b', label: '⏳ Pending' },
@@ -236,6 +242,7 @@ const BookingModal = ({ game, onClose, onSuccess, onAddPending, onResolvePending
   const [slot, setSlot] = useState(TIME_SLOTS[2]);
   const [state, setState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorText, setErrorText] = useState('');
+  const burst = useParticleBurst();
 
   const submit = async () => {
     setState('loading');
@@ -288,7 +295,7 @@ const BookingModal = ({ game, onClose, onSuccess, onAddPending, onResolvePending
               </Field>
             </div>
 
-            <Button onClick={submit} className="btn-eco w-full mt-5 h-11 font-bold">
+            <Button onClick={(e) => { burst(e); submit(); }} className="btn-eco w-full mt-5 h-11 font-bold">
               Confirm Booking · {game.cost} TCC
             </Button>
             <p className="text-[11px] text-muted-foreground-2 text-center mt-2">TCC will be deducted only after the venue confirms.</p>

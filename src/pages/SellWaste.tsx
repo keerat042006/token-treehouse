@@ -13,6 +13,7 @@ import { ARScanner } from '@/components/ARScanner';
 import { mockApi } from '@/lib/mockApi';
 import { usePending } from '@/lib/PendingActions';
 import { ServerActionOverlay, useAutoClose } from '@/components/ServerActionOverlay';
+import { useParticleBurst } from '@/hooks/useParticleBurst';
 
 const wasteTypes = [
   { name: 'Plastic', emoji: '🧴' },
@@ -26,6 +27,7 @@ const wasteTypes = [
 const SellWaste = () => {
   const user = useUser();
   const { add, resolve } = usePending();
+  const burst = useParticleBurst();
   const [selected, setSelected] = useState('');
   const [weight, setWeight] = useState('');
   const [step, setStep] = useState<'select' | 'weight'>('select');
@@ -85,7 +87,7 @@ const SellWaste = () => {
             <h1 className="text-3xl lg:text-4xl font-extrabold text-white mt-1">Sell Waste ♻️</h1>
             <p className="text-muted-foreground-2 text-sm mt-1">Drop waste at any partner café to earn tokens instantly</p>
           </div>
-          <Button onClick={() => setScannerOpen(true)} className="btn-eco font-bold h-11 px-5 rounded-xl">
+          <Button onClick={(e) => { burst(e); setScannerOpen(true); }} className="btn-eco font-bold h-11 px-5 rounded-xl">
             <Camera className="w-4 h-4 mr-2" /> Scan Waste with Camera
           </Button>
         </div>
@@ -177,7 +179,7 @@ const SellWaste = () => {
                     <div className="flex gap-3 max-w-sm mx-auto">
                       <Button variant="outline" onClick={() => setStep('select')} className="flex-1 border-border bg-surface-card hover:bg-surface-raised text-white">Back</Button>
                       <Button
-                        onClick={handleSubmit}
+                        onClick={(e) => { burst(e); handleSubmit(); }}
                         disabled={!weight || parseFloat(weight) <= 0}
                         className="flex-1 btn-eco font-bold"
                       >

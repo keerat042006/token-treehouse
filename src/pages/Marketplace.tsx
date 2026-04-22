@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { mockApi } from '@/lib/mockApi';
 import { usePending } from '@/lib/PendingActions';
 import { ServerActionOverlay, useAutoClose } from '@/components/ServerActionOverlay';
+import { useParticleBurst } from '@/hooks/useParticleBurst';
 
 interface Item {
   id: string;
@@ -50,6 +51,7 @@ const categories = [
 const Marketplace = () => {
   const user = useUser();
   const { add, resolve } = usePending();
+  const burst = useParticleBurst();
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [redeemed, setRedeemed] = useState<string | null>(null);
@@ -63,7 +65,8 @@ const Marketplace = () => {
     return true;
   });
 
-  const handleRedeem = async (item: Item) => {
+  const handleRedeem = async (item: Item, e?: React.MouseEvent<HTMLElement>) => {
+    if (e) burst(e);
     if (user.tokens < item.cost) {
       toast.error('Not enough tokens', { description: `You need ${item.cost - user.tokens} more TCC` });
       return;
@@ -184,7 +187,7 @@ const Marketplace = () => {
                   ) : (
                     <Button
                       size="sm"
-                      onClick={() => handleRedeem(item)}
+                      onClick={(e) => handleRedeem(item, e)}
                       disabled={user.tokens < item.cost}
                       className="btn-eco h-8 text-xs font-bold disabled:opacity-40"
                     >

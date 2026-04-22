@@ -3,13 +3,14 @@ import { ReactNode, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard, ShoppingBag, Clock3, Trophy, Info, Recycle, Truck,
-  Menu, X, Coins, LogOut, Gamepad2, Wallet as WalletIcon, Map as MapIcon,
+  Menu, X, Coins, LogOut, Gamepad2, Wallet as WalletIcon, Map as MapIcon, Globe,
 } from 'lucide-react';
 import { useUser } from '@/lib/UserContext';
 import { LevelBadge } from '@/components/LevelBadge';
 import { NotificationBell } from '@/components/NotificationBell';
 import { SupportDrawer } from '@/components/SupportDrawer';
 import { XPBar } from '@/components/XPBar';
+import { useWorldNav } from '@/components/WorldNavContext';
 
 const nav = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -68,6 +69,7 @@ const Sidebar = ({ onNavigate }: { onNavigate?: () => void }) => {
 export const AppShell = ({ children }: { children: ReactNode }) => {
   const user = useUser();
   const { pathname } = useLocation();
+  const { enterWorld } = useWorldNav();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [supportOpen, setSupportOpen] = useState(false);
 
@@ -105,6 +107,16 @@ export const AppShell = ({ children }: { children: ReactNode }) => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* World View Button */}
+            <button
+              onClick={enterWorld}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all bg-eco-green/10 text-eco-green hover:bg-eco-green/20 border border-eco-green/30"
+              title="Enter 3D World View"
+            >
+              <Globe className="w-4 h-4" />
+              <span className="hidden sm:inline">World</span>
+            </button>
+
             {user.isLoggedIn && (
               <>
                 <NotificationBell />

@@ -9,10 +9,12 @@ import { CountUp } from '@/components/CountUp';
 import { LevelBadge } from '@/components/LevelBadge';
 import { DailyChallenge } from '@/components/DailyChallenge';
 import { Achievements } from '@/components/Achievements';
+import { EcoGlobe } from '@/components/EcoGlobe';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { useParticleBurst } from '@/hooks/useParticleBurst';
 import {
   Recycle, Truck, Gift, Coins, Sparkles, ArrowUpRight, Leaf, TrendingUp,
   CheckCircle2, Clock, Trophy, Award, IndianRupee, Footprints, ShoppingBag,
@@ -37,6 +39,7 @@ const Dashboard = () => {
 const DashboardContent = () => {
   const user = useUser();
   const navigate = useNavigate();
+  const burst = useParticleBurst();
 
   const tierTarget = user.level === 'Gold' ? 1000 : 500;
   const tierProgress = Math.min(100, (user.tokens / tierTarget) * 100);
@@ -79,10 +82,10 @@ const DashboardContent = () => {
             <p className="text-muted-foreground-2 text-sm mt-1">Here's your sustainability snapshot for this week.</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button onClick={() => navigate('/sell')} className="btn-eco h-10 font-semibold">
+            <Button onClick={(e) => { burst(e); navigate('/sell'); }} className="btn-eco h-10 font-semibold">
               <Recycle className="w-4 h-4 mr-2" /> Sell Waste
             </Button>
-            <Button onClick={() => navigate('/marketplace')} variant="outline" className="h-10 border-border bg-surface-card hover:bg-surface-raised">
+            <Button onClick={(e) => { burst(e); navigate('/marketplace'); }} variant="outline" className="h-10 border-border bg-surface-card hover:bg-surface-raised">
               <Gift className="w-4 h-4 mr-2" /> Redeem
             </Button>
           </div>
@@ -159,6 +162,34 @@ const DashboardContent = () => {
         {/* Daily Challenge */}
         <motion.div variants={fadeItem}>
           <DailyChallenge current={2.3} target={5} />
+        </motion.div>
+
+        {/* 3D Eco Globe */}
+        <motion.div variants={fadeItem} className="surface-flat p-6 lg:p-8 flex flex-col lg:flex-row items-center gap-8">
+          <EcoGlobe />
+          <div className="flex-1 space-y-4">
+            <div>
+              <p className="section-label mb-1">Global Impact</p>
+              <h2 className="text-2xl font-extrabold text-white">EcoFusion is live worldwide</h2>
+              <p className="text-muted-foreground-2 text-sm mt-2 leading-relaxed">
+                Every recycling action you take contributes to a global movement. Watch the hotspots pulse as eco-warriors around the world submit waste, earn tokens, and protect the planet.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="surface-raised p-4 rounded-xl">
+                <p className="text-2xl font-extrabold" style={{ color: '#00e5a0', textShadow: '0 0 10px #00e5a0' }}>
+                  <CountUp end={12847} />
+                </p>
+                <p className="text-xs text-muted-foreground-2 mt-1">Active recyclers</p>
+              </div>
+              <div className="surface-raised p-4 rounded-xl">
+                <p className="text-2xl font-extrabold text-eco-amber">
+                  <CountUp end={340} />t
+                </p>
+                <p className="text-xs text-muted-foreground-2 mt-1">CO₂ offset total</p>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Your Impact */}
