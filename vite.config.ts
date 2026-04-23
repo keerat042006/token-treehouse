@@ -5,11 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-<<<<<<< HEAD
-base: '/',
-=======
   base: mode === 'production' ? '/token-treehouse/' : '/',
->>>>>>> 220e40e (Ui and backend fixed)
   server: {
     host: "::",
     port: 8080,
