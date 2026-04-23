@@ -91,10 +91,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const requestPickup = (address: string, wasteType: string, weight: number, timeSlot: string) => {
     const rate = getMarketRate(wasteType);
     const earned = Math.round(weight * rate);
+    const now = new Date().toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false });
+    const today = new Date().toISOString().slice(0, 10);
     const p: PickupRequest = {
       id: uid(), address, wasteType, weight, timeSlot,
-      status: 'requested', tokens: earned,
-      date: new Date().toISOString().slice(0, 10),
+      status: 'scheduled', tokens: earned,
+      date: today,
+      statusTimestamps: { scheduled: `${today} ${now}` },
     };
     setPickups(pk => [p, ...pk]);
   };
@@ -102,12 +105,19 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const updatePickupStatus = (id: string, status: PickupRequest['status']) => {
     setPickups(pk => pk.map(p => {
       if (p.id !== id) return p;
-      const updated = { ...p, status, agent: p.agent || 'Ravi K.' };
-      if (status === 'collected') {
+      const now = new Date().toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false });
+      const today = new Date().toISOString().slice(0, 10);
+      const updated: PickupRequest = {
+        ...p,
+        status,
+        agent: p.agent || 'Ravi K.',
+        statusTimestamps: { ...p.statusTimestamps, [status]: `${today} ${now}` },
+      };
+      if (status === 'tokens_credited') {
         const tx: Transaction = {
           id: uid(), type: 'earned', amount: updated.tokens,
-          description: `${updated.wasteType} - ${updated.weight} kg pickup`,
-          date: new Date().toISOString().slice(0, 10), category: 'waste',
+          description: `${updated.wasteType} - ${updated.weight} kg pickup collected & verified`,
+          date: today, category: 'waste',
         };
         setTransactions(t => [tx, ...t]);
         setTokens(tk => tk + updated.tokens);

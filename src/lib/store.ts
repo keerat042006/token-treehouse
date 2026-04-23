@@ -16,10 +16,11 @@ export interface PickupRequest {
   wasteType: string;
   weight: number;
   timeSlot: string;
-  status: 'requested' | 'assigned' | 'on-the-way' | 'collected';
+  status: 'scheduled' | 'worker_assigned' | 'waste_collected' | 'verification_in_progress' | 'tokens_credited';
   agent?: string;
   tokens: number;
   date: string;
+  statusTimestamps?: Partial<Record<string, string>>;
 }
 
 export interface Transaction {
@@ -100,8 +101,8 @@ export const SAMPLE_USER = {
     { id: '4', type: 'E-Waste', weight: 1.0, tokens: 40, date: '2026-03-15', method: 'pickup' as const },
   ],
   pickups: [
-    { id: 'p1', address: '42 MG Road, Bangalore', wasteType: 'Plastic', weight: 3, timeSlot: '10:00 - 12:00', status: 'collected' as const, agent: 'Ravi K.', tokens: 36, date: '2026-03-21' },
-    { id: 'p2', address: '42 MG Road, Bangalore', wasteType: 'Paper', weight: 5, timeSlot: '14:00 - 16:00', status: 'on-the-way' as const, agent: 'Priya M.', tokens: 40, date: '2026-03-24' },
+    { id: 'p1', address: '42 MG Road, Bangalore', wasteType: 'Plastic', weight: 3, timeSlot: '10:00 - 12:00', status: 'tokens_credited' as const, agent: 'Ravi K.', tokens: 36, date: '2026-03-21', statusTimestamps: { scheduled: '2026-03-21 09:00', worker_assigned: '2026-03-21 09:30', waste_collected: '2026-03-21 10:45', verification_in_progress: '2026-03-21 11:15', tokens_credited: '2026-03-21 12:00' } },
+    { id: 'p2', address: '42 MG Road, Bangalore', wasteType: 'Paper', weight: 5, timeSlot: '14:00 - 16:00', status: 'waste_collected' as const, agent: 'Priya M.', tokens: 40, date: '2026-03-24', statusTimestamps: { scheduled: '2026-03-24 13:00', worker_assigned: '2026-03-24 13:45', waste_collected: '2026-03-24 15:10' } },
   ],
   transactions: [
     { id: 't1', type: 'earned' as const, amount: 62, description: 'Plastic - 5.2 kg café drop', date: '2026-03-22', category: 'waste' },

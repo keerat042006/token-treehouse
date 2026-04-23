@@ -77,15 +77,15 @@ const SellWaste = () => {
           open={showCelebration}
           onClose={reset}
           tokens={earnedTokens}
-          title="Waste Submitted!"
-          subtitle={`${weight} kg of ${selected} successfully verified`}
+          title="Request Received"
+          subtitle="Your recycling request has been received. Tokens will be credited to your wallet upon successful collection and verification by our team."
         />
 
         <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="section-label">Earn TCC</p>
             <h1 className="text-3xl lg:text-4xl font-extrabold text-white mt-1">Sell Waste ♻️</h1>
-            <p className="text-muted-foreground-2 text-sm mt-1">Drop waste at any partner café to earn tokens instantly</p>
+            <p className="text-muted-foreground-2 text-sm mt-1">Drop waste at any partner café — tokens credited after verification</p>
           </div>
           <Button onClick={(e) => { burst(e); setScannerOpen(true); }} className="btn-eco font-bold h-11 px-5 rounded-xl">
             <Camera className="w-4 h-4 mr-2" /> Scan Waste with Camera
@@ -97,7 +97,13 @@ const SellWaste = () => {
           <div className="lg:col-span-2">
             <AnimatePresence mode="wait">
               {step === 'select' && (
-                <motion.div key="select" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <motion.div
+                  key="select"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                >
                   <div className="surface-flat p-5 mb-5">
                     <div className="flex items-center gap-2 mb-4">
                       <TrendingUp className="w-4 h-4 text-eco-blue" />
@@ -137,7 +143,13 @@ const SellWaste = () => {
               )}
 
               {step === 'weight' && (
-                <motion.div key="weight" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
+                <motion.div
+                  key="weight"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                >
                   <button onClick={() => setStep('select')} className="text-xs font-semibold text-eco-blue mb-3 inline-flex items-center gap-1 hover:underline">
                     <ArrowLeft className="w-3 h-3" /> Back to types
                   </button>
@@ -197,10 +209,15 @@ const SellWaste = () => {
             <div className="surface-flat p-5">
               <h3 className="text-sm font-bold text-white mb-3">How it works</h3>
               <ol className="space-y-3 text-sm text-muted-foreground-2">
-                {['Pick your waste type', 'Enter weight (kg)', 'Drop at partner café', 'Tokens credited instantly'].map((step, i) => (
-                  <li key={step} className="flex items-start gap-3">
+                {[
+                  'Pick your waste type',
+                  'Enter weight (kg)',
+                  'Drop at partner café',
+                  'Tokens credited after verification',
+                ].map((s, i) => (
+                  <li key={s} className="flex items-start gap-3">
                     <span className="w-5 h-5 rounded-full bg-eco-blue/20 border border-eco-blue/40 text-eco-blue text-[11px] font-bold flex items-center justify-center shrink-0">{i + 1}</span>
-                    <span>{step}</span>
+                    <span>{s}</span>
                   </li>
                 ))}
               </ol>
@@ -217,9 +234,9 @@ const SellWaste = () => {
         <ServerActionOverlay
           open={serverState !== 'idle'}
           state={serverState}
-          loadingText="Submitting to server..."
-          successTitle="Submission received!"
-          successText="Our team will verify and credit TCC within 2 hours."
+          loadingText="Submitting your recycling request..."
+          successTitle="Request Received"
+          successText="Your recycling request has been received. Tokens will be credited to your wallet upon successful collection and verification by our team."
           errorText={errMsg}
           onClose={() => setServerState('idle')}
           onRetry={handleSubmit}
