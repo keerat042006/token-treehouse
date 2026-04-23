@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { UserProvider } from "@/lib/UserContext";
 import { PendingProvider } from "@/lib/PendingActions";
 import { EcoBackground } from "@/components/EcoBackground";
+import { AIChatbot } from "@/components/AIChatbot";
 import { RouteTransition } from "@/components/RouteTransition";
 import { WorldNavProvider } from "@/components/WorldNavContext";
 import { WorldNav } from "@/components/WorldNav";
@@ -54,9 +55,11 @@ const App = () => (
         <PendingProvider>
           <Toaster />
           <Sonner />
+          {/* AI Chatbot */}
+          <AIChatbot />
           {/* Fixed 3D background — always behind everything */}
           <EcoBackground />
-          <BrowserRouter>
+          <BrowserRouter basename={import.meta.env.PROD ? '/token-treehouse' : '/'}>
             <WorldNavProvider>
               {/* 3D floating world overlay */}
               <WorldNav />
