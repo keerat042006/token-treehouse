@@ -6,569 +6,486 @@ import { AppShell } from '@/components/AppShell';
 import { PageWrapper } from '@/components/PageWrapper';
 import { WelcomePopup } from '@/components/WelcomePopup';
 import { CountUp } from '@/components/CountUp';
-import { LevelBadge } from '@/components/LevelBadge';
 import { DailyChallenge } from '@/components/DailyChallenge';
 import { Achievements } from '@/components/Achievements';
-import { EcoGlobe } from '@/components/EcoGlobe';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { useParticleBurst } from '@/hooks/useParticleBurst';
 import {
-  Recycle, Truck, Gift, Coins, Sparkles, ArrowUpRight, Leaf, TrendingUp,
-  CheckCircle2, Clock, Trophy, Award, IndianRupee, Footprints, ShoppingBag,
-  Mail, Lock, User as UserIcon, LogIn, UserPlus,
+    Recycle, Truck, Gift, Coins, Sparkles, ArrowUpRight, Leaf, TrendingUp,
+    CheckCircle2, Clock, Trophy, Award, IndianRupee, Mail, Lock, User as UserIcon, LogIn, UserPlus, Zap,
 } from 'lucide-react';
-import { Area, AreaChart, ResponsiveContainer, Bar, BarChart } from 'recharts';
+import { Area, AreaChart, ResponsiveContainer } from 'recharts';
 
-const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
-const fadeItem = { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
+const container = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 }
+    }
+};
+
+const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+};
 
 const Dashboard = () => {
-  const user = useUser();
-  if (!user.isLoggedIn) return <LoginScreen />;
-  return (
-    <AppShell>
-      <WelcomePopup />
-      <DashboardContent />
-    </AppShell>
-  );
+    const user = useUser();
+    if (!user.isLoggedIn) return <LoginScreen />;
+    return (
+        <AppShell>
+            <WelcomePopup />
+            <DashboardContent />
+        </AppShell>
+    );
 };
 
 const DashboardContent = () => {
-  const user = useUser();
-  const navigate = useNavigate();
-  const burst = useParticleBurst();
+    const user = useUser();
+    const navigate = useNavigate();
 
-  const tierTarget = user.level === 'Gold' ? 1000 : 500;
-  const tierProgress = Math.min(100, (user.tokens / tierTarget) * 100);
-  const submissionsCount = user.submissions.length + user.pickups.length;
-  const co2Saved = +(user.totalWasteKg * 2.5).toFixed(1);
-  const ecoPoints = Math.round(user.totalWasteKg * 20);
+    const submissionsCount = user.submissions.length + user.pickups.length;
+    const co2Saved = +(user.totalWasteKg * 2.5).toFixed(1);
 
-  const sampleSubmissions = [
-    { date: 'Apr 14', type: 'Cardboard', weight: 8.2, tokens: 82, status: 'verified' },
-    { date: 'Apr 10', type: 'Plastic PET', weight: 3.5, tokens: 35, status: 'verified' },
-    { date: 'Apr 7', type: 'E-waste', weight: 12.0, tokens: 144, status: 'pending' },
-    { date: 'Apr 3', type: 'Metal', weight: 6.8, tokens: 81, status: 'verified' },
-  ];
+    const chartData = Array.from({ length: 7 }, (_, i) => ({
+        day: i,
+        value: Math.floor(Math.random() * 50) + 20
+    }));
 
-  const leaderboard = [
-    { rank: 1, name: 'Priya S.', tc: 892, you: false, medal: '🥇' },
-    { rank: 2, name: 'Rahul M.', tc: 674, you: false, medal: '🥈' },
-    { rank: 3, name: `${user.name.split(' ')[0] || 'Arjun'} (You)`, tc: user.tokens, you: true, medal: '🥉' },
-  ];
+    const recentActivity = [
+        { date: 'Apr 22', type: 'Plastic PET', weight: 5.5, tokens: 55, status: 'verified' },
+        { date: 'Apr 20', type: 'Cardboard', weight: 8.2, tokens: 82, status: 'verified' },
+        { date: 'Apr 18', type: 'E-waste', weight: 3.0, tokens: 36, status: 'pending' },
+    ];
 
-  const rewards = [
-    { name: 'Amazon ₹100', cost: 100, emoji: '🛒', color: 'hsl(var(--eco-amber))' },
-    { name: 'Zepto ₹50', cost: 50, emoji: '🛍️', color: 'hsl(var(--eco-blue))' },
-    { name: 'Plant a Tree', cost: 10, emoji: '🌳', color: 'hsl(var(--eco-green))' },
-  ];
+    return (
+        <PageWrapper>
+            <motion.div
+                variants={container}
+                initial="hidden"
+                animate="show"
+                className="max-w-7xl mx-auto space-y-8 perspective-1000"
+            >
+                {/* Header with 3D Effect */}
+                <motion.div variants={item} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 text-shadow">
+                            Welcome back, {user.name.split(' ')[0]} 👋
+                        </h1>
+                        <p className="text-muted-foreground">Track your impact and earn rewards</p>
+                    </div>
+                    <div className="flex gap-3">
+                        <Button onClick={() => navigate('/sell')} className="btn-3d text-white">
+                            <Recycle className="w-4 h-4 mr-2" />
+                            Sell Waste
+                        </Button>
+                        <Button onClick={() => navigate('/marketplace')} className="btn-3d text-white" style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' }}>
+                            <Gift className="w-4 h-4 mr-2" />
+                            Rewards
+                        </Button>
+                    </div>
+                </motion.div>
 
-  const spark = (seed: number) =>
-    Array.from({ length: 8 }).map((_, i) => ({ v: Math.round(20 + Math.sin(i + seed) * 10 + (i * seed) % 12) }));
+                {/* 3D Stats Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <motion.div variants={item} className="stat-card-3d group">
+                        <div className="flex items-center justify-between mb-3">
+                            <div className="icon-3d p-3 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl">
+                                <Coins className="w-6 h-6 text-blue-400" />
+                            </div>
+                            <TrendingUp className="w-4 h-4 text-green-400" />
+                        </div>
+                        <div className="text-4xl font-bold text-3d mb-1">
+                            <CountUp end={user.tokens} />
+                        </div>
+                        <div className="text-sm text-muted-foreground mb-2">TrashCash Tokens</div>
+                        <div className="text-xs text-green-400 font-semibold">≈ ₹{user.tokens.toFixed(2)} INR</div>
+                    </motion.div>
 
-  return (
-    <PageWrapper>
-      <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6">
-        {/* Greeting */}
-        <motion.div variants={fadeItem} className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <p className="section-label mb-1.5">Welcome back</p>
-            <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
-              Hey, {user.name.split(' ')[0]} <span className="inline-block">👋</span>
-            </h1>
-            <p className="text-muted-foreground-2 text-sm mt-1">Here's your sustainability snapshot for this week.</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button onClick={(e) => { burst(e); navigate('/sell'); }} className="btn-eco h-10 font-semibold">
-              <Recycle className="w-4 h-4 mr-2" /> Sell Waste
-            </Button>
-            <Button onClick={(e) => { burst(e); navigate('/marketplace'); }} variant="outline" className="h-10 border-border bg-surface-card hover:bg-surface-raised">
-              <Gift className="w-4 h-4 mr-2" /> Redeem
-            </Button>
-          </div>
-        </motion.div>
+                    <motion.div variants={item} className="stat-card-3d group">
+                        <div className="flex items-center justify-between mb-3">
+                            <div className="icon-3d p-3 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-xl">
+                                <Leaf className="w-6 h-6 text-green-400" />
+                            </div>
+                            <ArrowUpRight className="w-4 h-4 text-green-400" />
+                        </div>
+                        <div className="text-4xl font-bold text-3d mb-1">
+                            <CountUp end={user.totalWasteKg} decimals={1} />
+                        </div>
+                        <div className="text-sm text-muted-foreground">Kg Recycled</div>
+                    </motion.div>
 
-        {/* Hero grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5">
-          {/* Wallet hero */}
-          <motion.div variants={fadeItem} className="wallet-hero shimmer p-6 lg:p-8 lg:col-span-2 relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--eco-blue) / 0.18), transparent 70%)' }} />
-            <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--eco-amber) / 0.12), transparent 70%)' }} />
+                    <motion.div variants={item} className="stat-card-3d group">
+                        <div className="flex items-center justify-between mb-3">
+                            <div className="icon-3d p-3 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-xl">
+                                <Sparkles className="w-6 h-6 text-purple-400" />
+                            </div>
+                            <ArrowUpRight className="w-4 h-4 text-purple-400" />
+                        </div>
+                        <div className="text-4xl font-bold text-3d mb-1">
+                            <CountUp end={co2Saved} decimals={1} />
+                        </div>
+                        <div className="text-sm text-muted-foreground">CO₂ Offset (kg)</div>
+                    </motion.div>
 
-            <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div>
-                <p className="section-label">TrashCash Tokens</p>
-                <div className="flex items-baseline gap-2 mt-2">
-                  <span
-                    className="font-extrabold leading-none text-eco-blue"
-                    style={{
-                      fontSize: 'clamp(48px, 7vw, 72px)',
-                      textShadow: '0 0 32px hsl(var(--eco-blue) / 0.45)',
-                      fontFamily: 'DM Sans, Inter, sans-serif',
-                    }}
-                  >
-                    <CountUp end={user.tokens} />
-                  </span>
-                  <span className="text-2xl font-bold text-eco-blue/70">TCC</span>
-                  <span className="coin-spin ml-1 inline-flex">
-                    <Coins className="w-7 h-7 text-eco-amber" />
-                  </span>
+                    <motion.div variants={item} className="stat-card-3d group">
+                        <div className="flex items-center justify-between mb-3">
+                            <div className="icon-3d p-3 bg-gradient-to-br from-amber-500/20 to-amber-600/20 rounded-xl">
+                                <Trophy className="w-6 h-6 text-amber-400" />
+                            </div>
+                            <Award className="w-4 h-4 text-amber-400" />
+                        </div>
+                        <div className="text-4xl font-bold text-3d mb-1">
+                            <CountUp end={submissionsCount} />
+                        </div>
+                        <div className="text-sm text-muted-foreground">Total Submissions</div>
+                    </motion.div>
                 </div>
-                <p className="text-eco-amber font-semibold mt-2 flex items-center gap-1">
-                  <IndianRupee className="w-4 h-4" />{user.tokens.toFixed(2)} INR
-                  <span className="text-muted-foreground-2 font-normal text-xs ml-2">≈ live conversion</span>
-                </p>
 
-                <div className="flex flex-wrap gap-2 mt-5">
-                  <span className="pill-outline"><Recycle className="w-3 h-3 text-eco-blue" /> {user.totalWasteKg} kg recycled</span>
-                  <span className="pill-outline"><TrendingUp className="w-3 h-3 text-eco-blue" /> {submissionsCount} submissions</span>
+                {/* Main Content Grid with 3D Cards */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Left Column - Activity Chart */}
+                    <motion.div variants={item} className="lg:col-span-2 card-3d p-6">
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 className="text-xl font-bold text-white">Your Impact</h2>
+                                <p className="text-sm text-muted-foreground mt-1">Last 7 days activity</p>
+                            </div>
+                            <button className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                                View All →
+                            </button>
+                        </div>
+
+                        <div className="chart-3d h-64 p-4">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={chartData}>
+                                    <defs>
+                                        <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
+                                            <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <Area
+                                        type="monotone"
+                                        dataKey="value"
+                                        stroke="#3b82f6"
+                                        strokeWidth={3}
+                                        fill="url(#colorValue)"
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-white/10">
+                            <div className="tilt-3d">
+                                <div className="text-2xl font-bold text-white">
+                                    <CountUp end={245} />
+                                </div>
+                                <div className="text-xs text-muted-foreground mt-1">This Week</div>
+                            </div>
+                            <div className="tilt-3d">
+                                <div className="text-2xl font-bold text-green-400">+12%</div>
+                                <div className="text-xs text-muted-foreground mt-1">vs Last Week</div>
+                            </div>
+                            <div className="tilt-3d">
+                                <div className="text-2xl font-bold text-purple-400">
+                                    <CountUp end={892} />
+                                </div>
+                                <div className="text-xs text-muted-foreground mt-1">All Time</div>
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Right Column - Quick Actions with 3D */}
+                    <motion.div variants={item} className="space-y-4">
+                        <div className="card-3d p-6">
+                            <h3 className="text-lg font-bold text-white mb-4">Quick Actions</h3>
+                            <div className="space-y-3">
+                                <button
+                                    onClick={() => navigate('/sell')}
+                                    className="w-full flex items-center gap-3 p-4 rounded-xl transition-all tilt-3d"
+                                    style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05))' }}
+                                >
+                                    <div className="icon-3d p-2 bg-blue-500/20 rounded-lg">
+                                        <Recycle className="w-5 h-5 text-blue-400" />
+                                    </div>
+                                    <div className="flex-1 text-left">
+                                        <div className="font-semibold text-white">Sell Waste</div>
+                                        <div className="text-xs text-muted-foreground">Earn tokens now</div>
+                                    </div>
+                                    <ArrowUpRight className="w-4 h-4 text-blue-400" />
+                                </button>
+
+                                <button
+                                    onClick={() => navigate('/pickup')}
+                                    className="w-full flex items-center gap-3 p-4 rounded-xl transition-all tilt-3d"
+                                    style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05))' }}
+                                >
+                                    <div className="icon-3d p-2 bg-green-500/20 rounded-lg">
+                                        <Truck className="w-5 h-5 text-green-400" />
+                                    </div>
+                                    <div className="flex-1 text-left">
+                                        <div className="font-semibold text-white">Request Pickup</div>
+                                        <div className="text-xs text-muted-foreground">Schedule collection</div>
+                                    </div>
+                                    <ArrowUpRight className="w-4 h-4 text-green-400" />
+                                </button>
+
+                                <button
+                                    onClick={() => navigate('/marketplace')}
+                                    className="w-full flex items-center gap-3 p-4 rounded-xl transition-all tilt-3d"
+                                    style={{ background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.05))' }}
+                                >
+                                    <div className="icon-3d p-2 bg-purple-500/20 rounded-lg">
+                                        <Gift className="w-5 h-5 text-purple-400" />
+                                    </div>
+                                    <div className="flex-1 text-left">
+                                        <div className="font-semibold text-white">Redeem Rewards</div>
+                                        <div className="text-xs text-muted-foreground">Browse marketplace</div>
+                                    </div>
+                                    <ArrowUpRight className="w-4 h-4 text-purple-400" />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="card-3d p-6">
+                            <div className="flex items-center gap-2 mb-4">
+                                <Zap className="w-5 h-5 text-amber-400 pulse-3d" />
+                                <h3 className="text-lg font-bold text-white">Level Progress</h3>
+                            </div>
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between text-sm">
+                                    <span className="text-muted-foreground">Current Level</span>
+                                    <span className="font-semibold text-white badge-3d">{user.level}</span>
+                                </div>
+                                <div className="progress-3d">
+                                    <div className="progress-fill-3d" style={{ width: '65%' }} />
+                                </div>
+                                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                    <span>{user.tokens} TCC</span>
+                                    <span>500 TCC</span>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
                 </div>
-              </div>
 
-              {/* Tier ring */}
-              <TierRing progress={tierProgress} level={user.level} tokens={user.tokens} target={tierTarget} />
-            </div>
-          </motion.div>
+                {/* Daily Challenge */}
+                <motion.div variants={item}>
+                    <DailyChallenge current={2.3} target={5} />
+                </motion.div>
 
-          {/* Quick actions stacked */}
-          <motion.div variants={fadeItem} className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-3">
-            <QuickAction
-              icon={Truck}
-              title="Sell Waste"
-              desc="Schedule a pickup or drop-off"
-              color="hsl(var(--eco-blue))"
-              onClick={() => navigate('/sell')}
-            />
-            <QuickAction
-              icon={Footprints}
-              title="Request Pickup"
-              desc="We come to you within 24hrs"
-              color="hsl(var(--eco-amber))"
-              onClick={() => navigate('/pickup')}
-            />
-            <QuickAction
-              icon={Gift}
-              title="Redeem Tokens"
-              desc="Exchange TCC for rewards"
-              color="hsl(var(--eco-green))"
-              onClick={() => navigate('/marketplace')}
-            />
-          </motion.div>
-        </div>
+                {/* Recent Activity with 3D Table */}
+                <motion.div variants={item} className="card-3d p-6">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-xl font-bold text-white">Recent Activity</h2>
+                        <button
+                            onClick={() => navigate('/history')}
+                            className="text-sm text-blue-400 hover:text-blue-300 font-medium"
+                        >
+                            View All →
+                        </button>
+                    </div>
 
-        {/* Daily Challenge */}
-        <motion.div variants={fadeItem}>
-          <DailyChallenge current={2.3} target={5} />
-        </motion.div>
+                    <div className="overflow-x-auto">
+                        <table className="table-3d">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Weight</th>
+                                    <th className="text-right">Tokens</th>
+                                    <th className="text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {recentActivity.map((activity, i) => (
+                                    <tr key={i}>
+                                        <td className="text-muted-foreground">{activity.date}</td>
+                                        <td className="font-medium text-white">{activity.type}</td>
+                                        <td>{activity.weight} kg</td>
+                                        <td className="text-right font-semibold text-green-400">+{activity.tokens} TCC</td>
+                                        <td className="text-right">
+                                            {activity.status === 'verified' ? (
+                                                <span className="badge-3d text-green-400">
+                                                    <CheckCircle2 className="w-3 h-3" />
+                                                    Verified
+                                                </span>
+                                            ) : (
+                                                <span className="badge-3d text-amber-400">
+                                                    <Clock className="w-3 h-3" />
+                                                    Pending
+                                                </span>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </motion.div>
 
-        {/* 3D Eco Globe */}
-        <motion.div variants={fadeItem} className="surface-flat p-6 lg:p-8 flex flex-col lg:flex-row items-center gap-8">
-          <EcoGlobe />
-          <div className="flex-1 space-y-4">
-            <div>
-              <p className="section-label mb-1">Global Impact</p>
-              <h2 className="text-2xl font-extrabold text-white">EcoFusion is live worldwide</h2>
-              <p className="text-muted-foreground-2 text-sm mt-2 leading-relaxed">
-                Every recycling action you take contributes to a global movement. Watch the hotspots pulse as eco-warriors around the world submit waste, earn tokens, and protect the planet.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="surface-raised p-4 rounded-xl">
-                <p className="text-2xl font-extrabold" style={{ color: '#00e5a0', textShadow: '0 0 10px #00e5a0' }}>
-                  <CountUp end={12847} />
-                </p>
-                <p className="text-xs text-muted-foreground-2 mt-1">Active recyclers</p>
-              </div>
-              <div className="surface-raised p-4 rounded-xl">
-                <p className="text-2xl font-extrabold text-eco-amber">
-                  <CountUp end={340} />t
-                </p>
-                <p className="text-xs text-muted-foreground-2 mt-1">CO₂ offset total</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Your Impact */}
-        <motion.div variants={fadeItem}>
-          <div className="flex items-end justify-between mb-3">
-            <div>
-              <p className="section-label">Your Impact</p>
-              <h2 className="text-xl font-bold text-white mt-1">Sustainability metrics</h2>
-            </div>
-            <span className="text-xs text-muted-foreground-2 hidden sm:inline">Last 30 days</span>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-            <ImpactCard value={ecoPoints} label="EcoPoints earned" color="hsl(var(--eco-green))" icon={Leaf} chart="area" data={spark(2)} />
-            <ImpactCard value={co2Saved} suffix=" kg" label="CO₂ offset" color="hsl(var(--eco-teal))" icon={Sparkles} decimals={1} chart="area" data={spark(5)} />
-            <ImpactCard value={submissionsCount} label="Successful pickups" color="hsl(var(--eco-blue))" icon={Truck} chart="bar" data={spark(7)} />
-            <ImpactCard value={user.tokens} prefix="₹" label="Total value earned" color="hsl(var(--eco-amber))" icon={IndianRupee} chart="bar" data={spark(11)} />
-          </div>
-        </motion.div>
-
-        {/* Achievements */}
-        <motion.div variants={fadeItem}>
-          <Achievements />
-        </motion.div>
-
-        {/* Two-col: submissions + leaderboard */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 lg:gap-5">
-          {/* Recent submissions */}
-          <motion.div variants={fadeItem} className="surface-flat p-5 lg:p-6 xl:col-span-2">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="section-label">Activity</p>
-                <h3 className="text-lg font-bold text-white mt-0.5">Recent Submissions</h3>
-              </div>
-              <button onClick={() => navigate('/history')} className="text-xs font-semibold text-eco-blue hover:underline flex items-center gap-1">
-                View all <ArrowUpRight className="w-3 h-3" />
-              </button>
-            </div>
-
-            <div className="overflow-x-auto -mx-5 lg:-mx-6 px-5 lg:px-6">
-              <table className="w-full min-w-[520px]">
-                <thead>
-                  <tr className="text-[11px] uppercase tracking-wider text-muted-foreground-2 border-b border-border">
-                    <th className="text-left font-semibold py-2.5">Date</th>
-                    <th className="text-left font-semibold py-2.5">Waste Type</th>
-                    <th className="text-left font-semibold py-2.5">Weight</th>
-                    <th className="text-right font-semibold py-2.5">Tokens</th>
-                    <th className="text-right font-semibold py-2.5">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sampleSubmissions.map((s, i) => (
-                    <tr key={i} className="border-b border-border/50 hover:bg-white/[0.02] transition">
-                      <td className="py-3 text-sm text-muted-foreground-2">{s.date}</td>
-                      <td className="py-3 text-sm font-semibold text-white">{s.type}</td>
-                      <td className="py-3 text-sm text-white">{s.weight} kg</td>
-                      <td className="py-3 text-sm font-bold text-eco-amber text-right">+{s.tokens} TCC</td>
-                      <td className="py-3 text-right">
-                        {s.status === 'verified' ? (
-                          <span className="pill-status-verified"><CheckCircle2 className="w-3 h-3" /> Verified</span>
-                        ) : (
-                          <span className="pill-status-pending"><Clock className="w-3 h-3" /> Pending</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.div>
-
-          {/* Leaderboard preview */}
-          <motion.div variants={fadeItem} className="surface-flat p-5 lg:p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="section-label">Local Leaderboard</p>
-                <h3 className="text-lg font-bold text-white mt-0.5">Top recyclers</h3>
-              </div>
-              <Trophy className="w-5 h-5 text-eco-amber" />
-            </div>
-            <div className="space-y-2.5">
-              {leaderboard.map(l => (
-                <div
-                  key={l.rank}
-                  className={`flex items-center gap-3 p-3 rounded-xl ${l.you ? 'bg-eco-blue/10 border border-eco-blue/30' : 'bg-surface-raised'}`}
-                >
-                  <span className="text-xl">{l.medal}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-white truncate">{l.name}</p>
-                    <p className="text-[11px] text-muted-foreground-2">Rank #{l.rank}</p>
-                  </div>
-                  <span className="text-sm font-bold text-eco-amber">{l.tc} TCC</span>
-                </div>
-              ))}
-            </div>
-            <Button onClick={() => navigate('/leaderboard')} variant="outline" className="w-full mt-4 bg-transparent border-border text-white hover:bg-surface-raised">
-              View Full Leaderboard <ArrowUpRight className="w-3.5 h-3.5 ml-1" />
-            </Button>
-          </motion.div>
-        </div>
-
-        {/* Marketplace preview */}
-        <motion.div variants={fadeItem} className="surface-flat p-5 lg:p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <p className="section-label">Marketplace</p>
-              <h3 className="text-lg font-bold text-white mt-0.5">Trending rewards</h3>
-            </div>
-            <button onClick={() => navigate('/marketplace')} className="text-xs font-semibold text-eco-blue hover:underline flex items-center gap-1">
-              Browse all <ArrowUpRight className="w-3 h-3" />
-            </button>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {rewards.map(r => (
-              <div key={r.name} className="surface-card p-4 group cursor-pointer" onClick={() => navigate('/marketplace')}>
-                <div
-                  className="aspect-[3/2] rounded-xl flex items-center justify-center text-5xl mb-3"
-                  style={{ background: `linear-gradient(135deg, ${r.color.replace(')', ' / 0.2)')}, ${r.color.replace(')', ' / 0.05)')})`, border: `1px solid ${r.color.replace(')', ' / 0.3)')}` }}
-                >
-                  {r.emoji}
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-bold text-white">{r.name}</p>
-                    <p className="text-xs text-eco-amber font-semibold mt-0.5">{r.cost} TCC</p>
-                  </div>
-                  <Button size="sm" className="btn-eco h-8 text-xs">Redeem</Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </motion.div>
-    </PageWrapper>
-  );
+                {/* Achievements */}
+                <motion.div variants={item}>
+                    <Achievements />
+                </motion.div>
+            </motion.div>
+        </PageWrapper>
+    );
 };
-
-const TierRing = ({ progress, level, tokens, target }: { progress: number; level: string; tokens: number; target: number }) => {
-  const r = 56;
-  const c = 2 * Math.PI * r;
-  const offset = c - (progress / 100) * c;
-  return (
-    <div className="relative w-36 h-36 shrink-0 mx-auto lg:mx-0">
-      <svg className="w-full h-full -rotate-90" viewBox="0 0 140 140">
-        <circle cx="70" cy="70" r={r} fill="none" stroke="hsl(var(--surface-raised))" strokeWidth="10" />
-        <motion.circle
-          cx="70" cy="70" r={r} fill="none"
-          stroke="url(#tier-grad)"
-          strokeWidth="10"
-          strokeLinecap="round"
-          strokeDasharray={c}
-          initial={{ strokeDashoffset: c }}
-          animate={{ strokeDashoffset: offset }}
-          transition={{ duration: 1.4, ease: 'easeOut' }}
-        />
-        <defs>
-          <linearGradient id="tier-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="hsl(var(--eco-blue))" />
-            <stop offset="100%" stopColor="hsl(var(--eco-amber))" />
-          </linearGradient>
-        </defs>
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <Award className="w-4 h-4 text-eco-amber mb-1" />
-        <span className="text-xs font-bold text-white">{level}</span>
-        <span className="text-[10px] text-muted-foreground-2">{tokens}/{target} TCC</span>
-      </div>
-    </div>
-  );
-};
-
-const QuickAction = ({ icon: Icon, title, desc, color, onClick }: any) => (
-  <motion.button
-    onClick={onClick}
-    whileHover={{ y: -4 }}
-    whileTap={{ scale: 0.98 }}
-    className="surface-card p-5 text-left flex items-start gap-4 group h-full"
-  >
-    <div
-      className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition"
-      style={{ background: `${color.replace(')', ' / 0.15)')}`, border: `1px solid ${color.replace(')', ' / 0.35)')}` }}
-    >
-      <Icon className="w-5 h-5" style={{ color }} strokeWidth={2.4} />
-    </div>
-    <div className="flex-1 min-w-0">
-      <p className="text-sm font-bold text-white">{title}</p>
-      <p className="text-xs text-muted-foreground-2 mt-0.5 leading-snug">{desc}</p>
-    </div>
-    <ArrowUpRight className="w-4 h-4 text-muted-foreground-2 group-hover:text-eco-blue transition" />
-  </motion.button>
-);
-
-const ImpactCard = ({
-  value, label, color, icon: Icon, chart, data, decimals = 0, prefix = '', suffix = '',
-}: any) => (
-  <div className="surface-card p-5 relative overflow-hidden">
-    <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-25" style={{ background: `radial-gradient(circle, ${color}, transparent 70%)` }} />
-    <div className="relative">
-      <div className="flex items-center justify-between mb-3">
-        <div
-          className="w-9 h-9 rounded-lg flex items-center justify-center"
-          style={{ background: `${color.replace(')', ' / 0.15)')}`, border: `1px solid ${color.replace(')', ' / 0.3)')}` }}
-        >
-          <Icon className="w-4 h-4" style={{ color }} />
-        </div>
-        <ArrowUpRight className="w-3.5 h-3.5 text-eco-green" />
-      </div>
-      <p className="font-extrabold leading-none" style={{ fontSize: '32px', color, textShadow: `0 0 24px ${color.replace(')', ' / 0.4)')}` }}>
-        {prefix}<CountUp end={value} decimals={decimals} />{suffix}
-      </p>
-      <p className="text-xs text-muted-foreground-2 mt-2">{label}</p>
-      <div className="h-10 mt-2 -mx-1">
-        <ResponsiveContainer width="100%" height="100%">
-          {chart === 'area' ? (
-            <AreaChart data={data}>
-              <defs>
-                <linearGradient id={`g-${label}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={color} stopOpacity={0.5} />
-                  <stop offset="95%" stopColor={color} stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <Area type="monotone" dataKey="v" stroke={color} strokeWidth={2} fill={`url(#g-${label})`} />
-            </AreaChart>
-          ) : (
-            <BarChart data={data}>
-              <Bar dataKey="v" fill={color} radius={[3, 3, 0, 0]} />
-            </BarChart>
-          )}
-        </ResponsiveContainer>
-      </div>
-    </div>
-  </div>
-);
 
 const LoginScreen = () => {
-  const user = useUser();
-  const [mode, setMode] = useState<'login' | 'register'>('login');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
+    const user = useUser();
+    const [mode, setMode] = useState<'login' | 'register'>('login');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirm, setConfirm] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (mode === 'login') {
-      if (!email || !password) return toast.error('Enter email and password');
-      const derivedName = email.split('@')[0].replace(/[^a-zA-Z]/g, ' ').trim() || 'Recycler';
-      user.login(derivedName.charAt(0).toUpperCase() + derivedName.slice(1), email, '');
-      toast.success('Welcome back!');
-    } else {
-      if (!name || !email || !password) return toast.error('Fill all fields');
-      if (password !== confirm) return toast.error('Passwords do not match');
-      user.login(name, email, '');
-      toast.success('Account created — welcome to EcoFusion!');
-    }
-  };
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (mode === 'login') {
+            if (!email || !password) return toast.error('Enter email and password');
+            const derivedName = email.split('@')[0].replace(/[^a-zA-Z]/g, ' ').trim() || 'Recycler';
+            user.login(derivedName.charAt(0).toUpperCase() + derivedName.slice(1), email, '');
+            toast.success('Welcome back!');
+        } else {
+            if (!name || !email || !password) return toast.error('Fill all fields');
+            if (password !== confirm) return toast.error('Passwords do not match');
+            user.login(name, email, '');
+            toast.success('Account created!');
+        }
+    };
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <header className="px-6 h-16 flex items-center border-b border-border bg-surface-nav/80 backdrop-blur-xl">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center btn-eco">
-            <Recycle className="w-5 h-5 text-white" strokeWidth={2.5} />
-          </div>
-          <span className="font-extrabold text-white text-lg">EcoFusion</span>
-        </div>
-      </header>
-      <main className="flex-1 grid lg:grid-cols-2 items-center gap-8 max-w-[1200px] mx-auto w-full px-6 py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <span className="pill-outline mb-5"><Sparkles className="w-3 h-3 text-eco-blue" /> The fintech of recycling</span>
-          <h1 className="text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.05]">
-            Turn your <span className="text-eco-blue">waste</span> into a real <span className="text-eco-amber">wallet</span>.
-          </h1>
-          <p className="text-muted-foreground-2 text-lg mt-5 leading-relaxed">
-            EcoFusion is a modern circular economy platform. Recycle, earn TrashCash (TCC) tokens at live market rates, and redeem at 200+ partners.
-          </p>
-          <div className="flex items-center gap-6 mt-8 text-xs text-muted-foreground-2">
-            <div><span className="text-white font-bold">12K+</span> recyclers</div>
-            <div><span className="text-white font-bold">₹4.2M</span> tokens issued</div>
-            <div><span className="text-white font-bold">340 t</span> CO₂ saved</div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="relative rounded-3xl p-7 lg:p-8 overflow-hidden"
-          style={{
-            background: 'linear-gradient(160deg, hsl(var(--surface-card) / 0.85), hsl(var(--surface-base) / 0.85))',
-            border: '1px solid hsl(var(--eco-blue) / 0.35)',
-            boxShadow: '0 20px 60px -20px hsl(var(--eco-blue) / 0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
-            backdropFilter: 'blur(20px)',
-          }}
-        >
-          <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full" style={{ background: 'radial-gradient(circle, hsl(var(--eco-blue) / 0.25), transparent 70%)' }} />
-          <div className="relative">
-            <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center btn-eco">
-                <Recycle className="w-5 h-5 text-white" strokeWidth={2.5} />
-              </div>
-              <div>
-                <p className="font-extrabold text-white text-lg leading-none">EcoFusion</p>
-                <p className="text-[10px] font-semibold text-eco-amber tracking-[0.18em] uppercase mt-1">Recycle • Earn</p>
-              </div>
-            </div>
-
-            <div className="flex p-1 rounded-xl bg-surface-raised border border-border mb-5">
-              <button
-                type="button"
-                onClick={() => setMode('login')}
-                className={`flex-1 py-2 rounded-lg text-sm font-bold transition ${mode === 'login' ? 'bg-eco-blue text-white shadow-lg' : 'text-muted-foreground-2 hover:text-white'}`}
-              >
-                <LogIn className="w-3.5 h-3.5 inline mr-1.5" /> Login
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode('register')}
-                className={`flex-1 py-2 rounded-lg text-sm font-bold transition ${mode === 'register' ? 'bg-eco-blue text-white shadow-lg' : 'text-muted-foreground-2 hover:text-white'}`}
-              >
-                <UserPlus className="w-3.5 h-3.5 inline mr-1.5" /> Register
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-3.5">
-              {mode === 'register' && (
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground-2 font-semibold">Name</Label>
-                  <div className="relative">
-                    <UserIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                    <Input value={name} onChange={e => setName(e.target.value)} placeholder="Arjun Sharma" className="pl-9 bg-surface-raised border-border text-white" />
-                  </div>
-                </div>
-              )}
-              <div className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground-2 font-semibold">Email</Label>
-                <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                  <Input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@ecofusion.in" className="pl-9 bg-surface-raised border-border text-white" />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground-2 font-semibold">Password</Label>
-                <div className="relative">
-                  <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                  <Input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className="pl-9 bg-surface-raised border-border text-white" />
-                </div>
-              </div>
-              {mode === 'register' && (
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground-2 font-semibold">Confirm Password</Label>
-                  <div className="relative">
-                    <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground-2" />
-                    <Input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="••••••••" className="pl-9 bg-surface-raised border-border text-white" />
-                  </div>
-                </div>
-              )}
-
-              <Button type="submit" className="btn-eco w-full h-11 font-bold mt-2">
-                {mode === 'login' ? 'Login' : 'Create Account'}
-              </Button>
-            </form>
-
-            <div className="relative my-5">
-              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border" /></div>
-              <div className="relative flex justify-center"><span className="bg-surface-card px-3 text-[10px] font-semibold text-muted-foreground-2 uppercase tracking-wider">or</span></div>
-            </div>
-
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => user.loginDemo()}
-              className="w-full h-11 border-border bg-surface-raised hover:bg-surface-card text-white font-semibold"
+    return (
+        <div className="min-h-screen flex items-center justify-center p-4">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="w-full max-w-md"
             >
-              Continue as Guest →
-            </Button>
-          </div>
-        </motion.div>
-      </main>
-    </div>
-  );
+                <div className="glass-3d rounded-3xl p-8 shadow-3d">
+                    {/* Logo */}
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl mb-4 float-3d">
+                            <Recycle className="w-8 h-8 text-white" />
+                        </div>
+                        <h1 className="text-2xl font-bold text-white mb-2">EcoFusion</h1>
+                        <p className="text-sm text-muted-foreground">Recycle. Earn. Redeem.</p>
+                    </div>
+
+                    {/* Mode Toggle */}
+                    <div className="flex gap-2 p-1 bg-white/5 rounded-xl mb-6">
+                        <button
+                            onClick={() => setMode('login')}
+                            className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${mode === 'login'
+                                    ? 'btn-3d text-white'
+                                    : 'text-muted-foreground hover:text-white'
+                                }`}
+                        >
+                            <LogIn className="w-4 h-4 inline mr-2" />
+                            Login
+                        </button>
+                        <button
+                            onClick={() => setMode('register')}
+                            className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${mode === 'register'
+                                    ? 'btn-3d text-white'
+                                    : 'text-muted-foreground hover:text-white'
+                                }`}
+                        >
+                            <UserPlus className="w-4 h-4 inline mr-2" />
+                            Register
+                        </button>
+                    </div>
+
+                    {/* Form */}
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {mode === 'register' && (
+                            <div>
+                                <Label className="text-sm text-muted-foreground mb-2 block">Name</Label>
+                                <div className="relative">
+                                    <UserIcon className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                                    <Input
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Your name"
+                                        className="input-3d pl-11"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        <div>
+                            <Label className="text-sm text-muted-foreground mb-2 block">Email</Label>
+                            <div className="relative">
+                                <Mail className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                                <Input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="you@example.com"
+                                    className="input-3d pl-11"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <Label className="text-sm text-muted-foreground mb-2 block">Password</Label>
+                            <div className="relative">
+                                <Lock className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                                <Input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    className="input-3d pl-11"
+                                />
+                            </div>
+                        </div>
+
+                        {mode === 'register' && (
+                            <div>
+                                <Label className="text-sm text-muted-foreground mb-2 block">Confirm Password</Label>
+                                <div className="relative">
+                                    <Lock className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                                    <Input
+                                        type="password"
+                                        value={confirm}
+                                        onChange={(e) => setConfirm(e.target.value)}
+                                        placeholder="••••••••"
+                                        className="input-3d pl-11"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        <Button type="submit" className="btn-3d w-full text-white">
+                            {mode === 'login' ? 'Login' : 'Create Account'}
+                        </Button>
+                    </form>
+
+                    <div className="relative my-6">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-white/10" />
+                        </div>
+                        <div className="relative flex justify-center">
+                            <span className="px-4 text-xs text-muted-foreground bg-[#1e293b]">or</span>
+                        </div>
+                    </div>
+
+                    <Button
+                        onClick={() => user.loginDemo()}
+                        className="w-full btn-3d text-white"
+                        style={{ background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))' }}
+                    >
+                        Continue as Guest →
+                    </Button>
+                </div>
+            </motion.div>
+        </div>
+    );
 };
 
 export default Dashboard;

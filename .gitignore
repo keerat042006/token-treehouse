@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 .env
+<<<<<<< HEAD
+*.pdf
+=======
+node_modules/
+dist/
+.env
+>>>>>>> 5b5eaec (ChatBot Added)
